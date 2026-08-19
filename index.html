@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Lucky Bisht — Robotics &amp; Autonomous Systems Engineer</title>
-<meta name="description" content="Lucky Bisht — Robotics Engineer specializing in SLAM, ROS2 Nav2, Sensor Fusion, and Embedded Control Systems. B.Tech Automation & Robotics, GGSIPU Delhi."/>
+<meta name="description" content="Lucky Bisht — Automation & Robotics Engineer. SLAM, ROS2, sensor fusion, embedded systems. B.Tech GGSIPU Delhi. Navyug Infosolutions, Flywheel Aerospace, IIT Mandi."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -98,39 +98,6 @@ nav{
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)}}
 @media(max-width:860px){.nav-links{display:none;}}
 
-/* ── Engineering Title Block ───────────────────────────────── */
-.tblock{
-  border:1.5px solid var(--line);
-  background:rgba(11,36,68,0.7);
-  font-family:var(--ff-mono);
-  font-size:11px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  box-shadow:0 8px 30px rgba(0,0,0,0.3);
-}
-.tblock-cell{
-  padding:10px 14px;
-  border-right:1px solid var(--line-dim);
-  border-top:1px solid var(--line-dim);
-}
-.tblock-cell:nth-child(4n){border-right:none;}
-.tblock-cell:nth-child(-n+4){border-top:none;}
-.tblock-cell small{
-  display:block;
-  color:var(--line-dim);
-  font-size:9px;
-  text-transform:uppercase;
-  letter-spacing:1.5px;
-  margin-bottom:2px;
-}
-.tblock-cell b{
-  color:#fff;
-  font-size:12.5px;
-  font-weight:600;
-  font-family:var(--ff-body);
-}
-@media(max-width:700px){.tblock{grid-template-columns:repeat(2,1fr);}.tblock-cell:nth-child(2n){border-right:none;}}
-
 /* ── Hero Section ──────────────────────────────────────────── */
 #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 60px;}
 .sys-id{
@@ -165,16 +132,17 @@ h1.name em{font-style:normal;color:var(--accent);}
   color:var(--line-bright);
 }
 .role-pill b{color:var(--accent);}
+
 .hero-grid{
   display:grid;
-  grid-template-columns:1.1fr 0.9fr;
-  gap:44px;
-  align-items:center;
-  margin-top:20px;
+  grid-template-columns:1.05fr 0.95fr;
+  gap:36px;
+  align-items:start;
+  margin-top:24px;
 }
 @media(max-width:960px){.hero-grid{grid-template-columns:1fr;}}
 .hero-desc{
-  font-size:16px;
+  font-size:15.5px;
   color:var(--ink-light);
   line-height:1.8;
   margin-bottom:28px;
@@ -210,30 +178,128 @@ h1.name em{font-style:normal;color:var(--accent);}
   background:var(--blue-surface);
 }
 
-/* Technical Vector Frame */
-.schematic-box{
+/* ── Live System Telemetry HUD Panel (Replacing Fig 1) ─────── */
+.telemetry-hud{
   border:1.5px solid var(--line);
-  background:rgba(11,36,68,0.6);
-  padding:20px;
-  position:relative;
-  box-shadow:inset 0 0 20px rgba(0,0,0,0.5);
+  background:rgba(8,27,51,0.85);
+  box-shadow:0 12px 35px rgba(0,0,0,0.4), inset 0 0 15px rgba(15,45,82,0.6);
+  display:flex;
+  flex-direction:column;
 }
-.schematic-box::before, .schematic-box::after{
-  content:'';position:absolute;width:8px;height:8px;border:1.5px solid var(--accent);
-}
-.schematic-box::before{top:-4px;left:-4px;border-right:none;border-bottom:none;}
-.schematic-box::after{bottom:-4px;right:-4px;border-left:none;border-top:none;}
-.schematic-box svg{width:100%;height:auto;display:block;}
-.schematic-caption{
-  margin-top:12px;
+.hud-header{
+  padding:10px 16px;
+  background:var(--blue-panel);
+  border-bottom:1px solid var(--line-dim);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-family:var(--ff-mono);
-  font-size:9.5px;
-  color:var(--line-dim);
-  letter-spacing:1px;
-  display:flex;justify-content:space-between;
-  border-top:1px solid var(--line-dim);
-  padding-top:8px;
+  font-size:10.5px;
 }
+.hud-title{
+  color:#fff;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:1px;
+}
+.hud-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);}
+.hud-rate{color:var(--accent);font-size:10px;letter-spacing:1px;}
+
+.hud-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--line-dim);
+}
+.hud-stat{
+  background:var(--blue-surface);
+  padding:14px 16px;
+}
+.hud-stat small{
+  display:block;
+  font-family:var(--ff-mono);
+  font-size:9px;
+  color:var(--line);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+.hud-stat .val{
+  font-family:var(--ff-mono);
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+}
+.hud-stat .val span{
+  font-size:11px;
+  color:var(--accent);
+  font-weight:400;
+  margin-left:3px;
+}
+
+.hud-feed{
+  background:rgba(5,15,30,0.9);
+  padding:14px 16px;
+  border-top:1px solid var(--line-dim);
+  font-family:var(--ff-mono);
+  font-size:10.5px;
+  color:var(--line-bright);
+}
+.hud-feed-title{
+  color:var(--accent);
+  font-size:9.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+}
+.hud-log-row{
+  display:flex;
+  gap:12px;
+  padding:3px 0;
+  border-bottom:1px dashed rgba(42,72,108,0.4);
+}
+.hud-log-row:last-child{border-bottom:none;}
+.hud-log-time{color:var(--line-dim);}
+.hud-log-msg{color:var(--ink-light);}
+.hud-log-msg b{color:var(--ok);font-weight:600;}
+
+/* ── Engineering Title Block ───────────────────────────────── */
+.tblock{
+  border:1.5px solid var(--line);
+  background:rgba(11,36,68,0.7);
+  font-family:var(--ff-mono);
+  font-size:11px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  margin-top:32px;
+}
+.tblock-cell{
+  padding:10px 14px;
+  border-right:1px solid var(--line-dim);
+  border-top:1px solid var(--line-dim);
+}
+.tblock-cell:nth-child(4n){border-right:none;}
+.tblock-cell:nth-child(-n+4){border-top:none;}
+.tblock-cell small{
+  display:block;
+  color:var(--line-dim);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:2px;
+}
+.tblock-cell b{
+  color:#fff;
+  font-size:12px;
+  font-weight:600;
+  font-family:var(--ff-body);
+}
+@media(max-width:700px){.tblock{grid-template-columns:repeat(2,1fr);}.tblock-cell:nth-child(2n){border-right:none;}}
 
 /* ── Section Scaffolding ───────────────────────────────────── */
 section{padding:100px 0;position:relative;}
@@ -555,99 +621,69 @@ footer{
     <div class="hero-grid">
       <div>
         <p class="hero-desc reveal">
-          B.Tech Automation &amp; Robotics undergraduate at GGSIPU Delhi (CGPA 8.50/10, Class of 2027) with three hands-on robotics internships spanning embedded SLAM navigation, embedded mobile robotics, and underwater robot simulation research at IIT Mandi. Applies ROS2, sensor fusion, and embedded Linux workflows across Raspberry Pi and ESP32 platforms to build autonomous navigation systems.
+          B.Tech Automation &amp; Robotics undergraduate at GGSIPU Delhi (CGPA 8.50/10, Class of 2027) with three hands-on robotics internships spanning embedded SLAM navigation, embedded mobile robotics, and underwater robot simulation research at IIT Mandi[cite: 3]. Applies ROS2, sensor fusion, and embedded Linux workflows across Raspberry Pi and ESP32 platforms to build autonomous navigation systems[cite: 3].
         </p>
         <div class="hero-cta reveal">
           <a href="#projects" class="btn btn-fill">Explore Subsystems →</a>
           <a href="#contact" class="btn btn-ghost">Telemetry / Contact</a>
           <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="btn btn-ghost">GitHub Pipeline ↗</a>
         </div>
-        <div class="tblock reveal" style="margin-top:36px;">
-          <div class="tblock-cell"><small>Current Post</small><b>Embedded (SLAM) Intern</b></div>
-          <div class="tblock-cell"><small>Contractor</small><b>Navyug Infosolutions</b></div>
-          <div class="tblock-cell"><small>Active Since</small><b>Jun 2026</b></div>
-          <div class="tblock-cell"><small>Station</small><b>Delhi, India</b></div>
-          <div class="tblock-cell"><small>Discipline</small><b>Automation &amp; Robotics</b></div>
-          <div class="tblock-cell"><small>Institution</small><b>GGSIPU Delhi (USAR)</b></div>
-          <div class="tblock-cell"><small>Index (CGPA)</small><b>8.50 / 10.0</b></div>
-          <div class="tblock-cell"><small>Commission</small><b>Class of 2027</b></div>
-        </div>
       </div>
 
-      <!-- High-detail Quadruped SLAM Vector Schematic -->
-      <div class="schematic-box reveal">
-        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(127,168,214,0.1)" stroke-width="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#cadGrid)" />
-
-          <!-- Crosshairs -->
-          <g stroke="#2a486c" stroke-width="0.75" stroke-dasharray="3 3">
-            <line x1="200" y1="20" x2="200" y2="280"/>
-            <line x1="20" y1="150" x2="380" y2="150"/>
-          </g>
-
-          <!-- Quadruped Chassis & Actuators -->
-          <g stroke="#7fa8d6" stroke-width="1.3" fill="none" stroke-linejoin="round" stroke-linecap="round">
-            <!-- Main Rigid Body Frame -->
-            <polygon points="120,120 280,120 295,145 270,165 130,165 105,145" fill="rgba(19,56,99,0.5)"/>
-            
-            <!-- Sensor Payload Mast -->
-            <rect x="185" y="98" width="30" height="22" rx="2" fill="rgba(127,168,214,0.2)"/>
-            <circle cx="200" cy="98" r="7" fill="#ff6b35" opacity="0.8"/>
-            
-            <!-- Front LiDAR Puck -->
-            <rect x="280" y="125" width="16" height="18" rx="2" stroke="#ff6b35" fill="rgba(255,107,53,0.2)"/>
-            
-            <!-- Depth Camera Array -->
-            <rect x="290" y="145" width="8" height="6" fill="#38d996"/>
-
-            <!-- Left Front Leg Linkage -->
-            <path d="M 270 145 L 305 185 L 290 235 L 300 237"/>
-            <circle cx="270" cy="145" r="4" fill="#7fa8d6"/>
-            <circle cx="305" cy="185" r="3" fill="#ff6b35"/>
-
-            <!-- Left Rear Leg Linkage -->
-            <path d="M 130 145 L 95 185 L 110 235 L 100 237"/>
-            <circle cx="130" cy="145" r="4" fill="#7fa8d6"/>
-            <circle cx="95" cy="185" r="3" fill="#ff6b35"/>
-
-            <!-- Right Front Leg (Ghosted Interior) -->
-            <path d="M 255 140 L 280 175 L 265 220" stroke="#2a486c" stroke-dasharray="2 2"/>
-            <!-- Right Rear Leg (Ghosted Interior) -->
-            <path d="M 145 140 L 120 175 L 135 220" stroke="#2a486c" stroke-dasharray="2 2"/>
-          </g>
-
-          <!-- LiDAR Fan Cones & Rays -->
-          <g stroke="#ff6b35" stroke-dasharray="3 3" fill="none" opacity="0.75">
-            <path d="M 296 134 L 380 90"/>
-            <path d="M 296 134 L 380 180"/>
-            <path d="M 200 91 L 120 35"/>
-            <path d="M 200 91 L 280 35"/>
-            <circle cx="200" cy="91" r="50" stroke-dasharray="1 4" opacity="0.4"/>
-          </g>
-
-          <!-- Telemetry Annotations -->
-          <text x="25" y="30" font-family="IBM Plex Mono" font-size="8.5" fill="#ff6b35">SYS_ID: QUAD-SLAM-01</text>
-          <text x="25" y="42" font-family="IBM Plex Mono" font-size="7.5" fill="#7fa8d6">HOST: RASPBERRY PI 5</text>
-          <text x="25" y="54" font-family="IBM Plex Mono" font-size="7.5" fill="#7fa8d6">PIPE: ROS2 NAV2 / SLAM_TOOLBOX</text>
-          
-          <!-- Dimension Tick Callouts -->
-          <g stroke="#7fa8d6" stroke-width="0.75">
-            <line x1="105" y1="255" x2="300" y2="255"/>
-            <line x1="105" y1="250" x2="105" y2="260"/>
-            <line x1="300" y1="250" x2="300" y2="260"/>
-            <text x="202" y="268" font-family="IBM Plex Mono" font-size="8" fill="#7fa8d6" text-anchor="middle">WHEELBASE / STANCE: 520 mm</text>
-          </g>
-        </svg>
-        <div class="schematic-caption">
-          <span>FIG 01.0 // SENSOR FUSION SCHEMATIC</span>
-          <span>STATUS: BENCH VALIDATED</span>
+      <!-- Live Node & Telemetry Status HUD (Clean Engineering UI alternative) -->
+      <div class="telemetry-hud reveal">
+        <div class="hud-header">
+          <div class="hud-title"><span class="hud-dot"></span>SYS_TELEMETRY // ONBOARD BUS</div>
+          <div class="hud-rate">ROS2 @ 50 Hz</div>
+        </div>
+        <div class="hud-grid">
+          <div class="hud-stat">
+            <small>Active Compute Node</small>
+            <div class="val">RPi 5 <span>(Linux 6.x)</span></div>
+          </div>
+          <div class="hud-stat">
+            <small>State Estimator</small>
+            <div class="val">EKF <span>Fused (IMU+Odom)</span></div>
+          </div>
+          <div class="hud-stat">
+            <small>Microcontroller</small>
+            <div class="val">ESP32 <span>micro-ROS</span></div>
+          </div>
+          <div class="hud-stat">
+            <small>LiDAR Sweep / Rate</small>
+            <div class="val">360° <span>@ 30 Hz (8m)</span></div>
+          </div>
+        </div>
+        <div class="hud-feed">
+          <div class="hud-feed-title">
+            <span>ROS 2 Topic Monitor</span>
+            <span>QoS: RELIABLE</span>
+          </div>
+          <div class="hud-log-row">
+            <span class="hud-log-time">[00:00.12]</span>
+            <span class="hud-log-msg">/slam_toolbox <b>[LOCALIZED]</b> pose_cov &lt; 0.02</span>
+          </div>
+          <div class="hud-log-row">
+            <span class="hud-log-time">[00:00.34]</span>
+            <span class="hud-log-msg">/micro_ros_agent <b>[CONNECTED]</b> esp32_node via UART</span>
+          </div>
+          <div class="hud-log-row">
+            <span class="hud-log-time">[00:00.50]</span>
+            <span class="hud-log-msg">/cmd_vel PID heading lock <b>[HEADING STABLE &lt;2°]</b></span>
+          </div>
         </div>
       </div>
+    </div>
+
+    <div class="tblock reveal">
+      <div class="tblock-cell"><small>Current Post</small><b>Embedded (SLAM) Intern</b></div>
+      <div class="tblock-cell"><small>Contractor</small><b>Navyug Infosolutions</b></div>
+      <div class="tblock-cell"><small>Active Since</small><b>Jun 2026</b></div>
+      <div class="tblock-cell"><small>Station</small><b>Delhi, India</b></div>
+      <div class="tblock-cell"><small>Discipline</small><b>Automation &amp; Robotics</b></div>
+      <div class="tblock-cell"><small>Institution</small><b>GGSIPU Delhi (USAR)</b></div>
+      <div class="tblock-cell"><small>Index (CGPA)</small><b>8.50 / 10.0</b></div>
+      <div class="tblock-cell"><small>Commission</small><b>Class of 2027</b></div>
     </div>
   </div>
 </section>
@@ -677,16 +713,16 @@ footer{
         <div class="bom-meta">
           <div class="bom-idx">01</div>
           <div>
-            <div class="bom-role-title">Embedded (SLAM) Intern</div>
-            <div class="bom-org">Navyug Infosolutions Pvt. Ltd. · Delhi, India</div>
+            <div class="bom-role-title">Embedded (SLAM) Intern[cite: 3]</div>
+            <div class="bom-org">Navyug Infosolutions Pvt. Ltd. · Delhi, India[cite: 3]</div>
           </div>
-          <div class="bom-timeline">Jun 2026 – Present</div>
+          <div class="bom-timeline">Jun 2026 – Present[cite: 3]</div>
           <div><span class="badge badge-active">● RUNNING</span></div>
         </div>
         <div class="bom-content">
           <ul>
-            <li>Developing a SLAM-based localization and mapping pipeline for a quadruped robotic platform, fusing LiDAR and IMU data for real-time pose estimation across unstructured terrain.</li>
-            <li>Architecting ROS2 Nav2 and SLAM Toolbox path-planning pipelines on Raspberry Pi 5 within an embedded Linux workflow (project details confidential under NDA).</li>
+            <li>Developing a SLAM-based localization and mapping pipeline for a quadruped robotic platform, fusing LiDAR and IMU data for real-time pose estimation across unstructured terrain[cite: 3].</li>
+            <li>Architecting ROS2 Nav2 and SLAM Toolbox path-planning pipelines on Raspberry Pi 5 within an embedded Linux workflow (project details confidential under NDA)[cite: 3].</li>
           </ul>
           <div class="tech-pills">
             <span class="tpill">ROS2 Nav2</span><span class="tpill">SLAM Toolbox</span><span class="tpill">LiDAR</span><span class="tpill">IMU</span><span class="tpill">Raspberry Pi 5</span><span class="tpill">Embedded Linux</span>
@@ -698,16 +734,16 @@ footer{
         <div class="bom-meta">
           <div class="bom-idx">02</div>
           <div>
-            <div class="bom-role-title">Robotics Engineer Intern</div>
-            <div class="bom-org">Flywheel Aerospace · Delhi, India</div>
+            <div class="bom-role-title">Robotics Engineer Intern[cite: 3]</div>
+            <div class="bom-org">Flywheel Aerospace · Delhi, India[cite: 3]</div>
           </div>
-          <div class="bom-timeline">May 2026 – Jul 2026</div>
+          <div class="bom-timeline">May 2026 – Jul 2026[cite: 3]</div>
           <div><span class="badge badge-past">COMPLETED</span></div>
         </div>
         <div class="bom-content">
           <ul>
-            <li>Engineered "Luna," a wheeled mobile robot on ESP32 running micro-ROS, integrating IMU, ToF sensors, encoders, and LiDAR.</li>
-            <li>Implemented a PID-based heading-lock controller achieving heading accuracy within 2 degrees in continuous testing, alongside differential-drive and obstacle-avoidance behaviours validated on video.</li>
+            <li>Engineered "Luna," a wheeled mobile robot on ESP32 running micro-ROS, integrating IMU, ToF sensors, encoders, and LiDAR[cite: 3].</li>
+            <li>Implemented a PID-based heading-lock controller achieving heading accuracy within 2 degrees in continuous testing, alongside differential-drive and obstacle-avoidance behaviours validated on video[cite: 3].</li>
           </ul>
           <div class="tech-pills">
             <span class="tpill">ESP32</span><span class="tpill">micro-ROS</span><span class="tpill">PID Control</span><span class="tpill">IMU</span><span class="tpill">ToF Sensors</span><span class="tpill">Encoders</span><span class="tpill">LiDAR</span>
@@ -719,17 +755,17 @@ footer{
         <div class="bom-meta">
           <div class="bom-idx">03</div>
           <div>
-            <div class="bom-role-title">Research Intern</div>
-            <div class="bom-org">IIT Mandi · Mandi, Himachal Pradesh</div>
+            <div class="bom-role-title">Research Intern[cite: 3]</div>
+            <div class="bom-org">IIT Mandi · Mandi, Himachal Pradesh[cite: 3]</div>
           </div>
-          <div class="bom-timeline">Jun 2025 – Aug 2025</div>
+          <div class="bom-timeline">Jun 2025 – Aug 2025[cite: 3]</div>
           <div><span class="badge badge-past">COMPLETED</span></div>
         </div>
         <div class="bom-content">
           <ul>
-            <li>Designed a ROS2 Humble and Gazebo Ignition simulation pipeline for an autonomous underwater robot, integrating IMU and depth sensors for localization testing.</li>
-            <li>Characterised IMU and depth-sensor noise behaviour in RViz to inform EKF tuning parameters for underwater localisation.</li>
-            <li>Modelled a robotic brush mechanism in MATLAB/Simulink to study motion dynamics ahead of physical prototyping.</li>
+            <li>Designed a ROS2 Humble and Gazebo Ignition simulation pipeline for an autonomous underwater robot, integrating IMU and depth sensors for localization testing[cite: 3].</li>
+            <li>Characterised IMU and depth-sensor noise behaviour in RViz to inform EKF tuning parameters for underwater localisation[cite: 3].</li>
+            <li>Modelled a robotic brush mechanism in MATLAB/Simulink to study motion dynamics ahead of physical prototyping[cite: 3].</li>
           </ul>
           <div class="tech-pills">
             <span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Ignition</span><span class="tpill">MATLAB / Simulink</span><span class="tpill">RViz</span><span class="tpill">EKF Localization</span>
@@ -740,12 +776,12 @@ footer{
 
     <div class="edu-card reveal">
       <div class="edu-left">
-        <b>B.Tech, Automation &amp; Robotics — GGSIPU Delhi (University School of Automation &amp; Robotics)</b>
-        <p>2023 – 2027 · Specialization in Autonomous Navigation, Sensor Fusion &amp; Embedded Control</p>
+        <b>B.Tech, Automation &amp; Robotics — GGSIPU Delhi (University School of Automation &amp; Robotics)[cite: 3]</b>
+        <p>2023 – 2027 · Specialization in Autonomous Navigation, Sensor Fusion &amp; Embedded Control[cite: 3]</p>
       </div>
       <div class="edu-cgpa">
         <div class="val">8.50</div>
-        <div class="lbl">Cumulative GPA / 10.0</div>
+        <div class="lbl">Cumulative GPA / 10.0[cite: 3]</div>
       </div>
     </div>
   </div>
@@ -803,17 +839,17 @@ footer{
         </div>
         <div class="project-details">
           <div class="p-header">
-            <span class="p-title">Autonomous Underwater Vehicle — Naval Mine Surveillance Simulation</span>
-            <span class="p-date">Mar – May 2026</span>
+            <span class="p-title">Autonomous Underwater Vehicle — Naval Mine Surveillance Simulation[cite: 3]</span>
+            <span class="p-date">Mar – May 2026[cite: 3]</span>
           </div>
           <p class="p-desc">
-            Architected a 4-thruster torpedo-style AUV simulation with a 50 Hz IMU, 4-beam DVL, pressure depth sensor, and 120° FOV sonar (30 m range), using EKF-based sensor fusion, SLAM Toolbox mapping, and waypoint navigation with automated mission logging.
+            Architected a 4-thruster torpedo-style AUV simulation with a 50 Hz IMU, 4-beam DVL, pressure depth sensor, and 120° FOV sonar (30 m range), using EKF-based sensor fusion, SLAM Toolbox mapping, and waypoint navigation with automated mission logging[cite: 3].
           </p>
           <div class="tech-pills" style="margin-bottom:18px;">
             <span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Classic</span><span class="tpill">C++</span><span class="tpill">EKF Fusion</span><span class="tpill">SLAM Toolbox</span><span class="tpill">Sonar Arrays</span>
           </div>
           <div class="p-actions">
-            <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="p-link">GitHub / Demo Video ↗</a>
+            <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="p-link">GitHub / Demo Video ↗[cite: 3]</a>
           </div>
         </div>
       </div>
@@ -855,17 +891,17 @@ footer{
         </div>
         <div class="project-details">
           <div class="p-header">
-            <span class="p-title">Multi-Sensor Fusion Robot — IMU, GPS &amp; Camera</span>
-            <span class="p-date">Mar 2026</span>
+            <span class="p-title">Multi-Sensor Fusion Robot — IMU, GPS &amp; Camera[cite: 3]</span>
+            <span class="p-date">Mar 2026[cite: 3]</span>
           </div>
           <p class="p-desc">
-            Fused asynchronous IMU (50 Hz), GPS (1 Hz), and camera (30 Hz) streams via dedicated ROS2 subscriber nodes; built a live terminal dashboard refreshing every 0.5 s and a timestamped CSV session logger; validated with a physical webcam alongside Gazebo simulation.
+            Fused asynchronous IMU (50 Hz), GPS (1 Hz), and camera (30 Hz) streams via dedicated ROS2 subscriber nodes; built a live terminal dashboard refreshing every 0.5 s and a timestamped CSV session logger; validated with a physical webcam alongside Gazebo simulation[cite: 3].
           </p>
           <div class="tech-pills" style="margin-bottom:18px;">
             <span class="tpill">ROS2 Humble</span><span class="tpill">Python</span><span class="tpill">Async Data Sync</span><span class="tpill">v4l2_camera</span><span class="tpill">Gazebo</span>
           </div>
           <div class="p-actions">
-            <a href="https://github.com/luckybisht21/ros2-robot-simulation" target="_blank" rel="noopener" class="p-link">Inspect GitHub Repository ↗</a>
+            <a href="https://github.com/luckybisht21/ros2-robot-simulation" target="_blank" rel="noopener" class="p-link">Inspect GitHub Repository ↗[cite: 3]</a>
           </div>
         </div>
       </div>
@@ -901,17 +937,17 @@ footer{
         </div>
         <div class="project-details">
           <div class="p-header">
-            <span class="p-title">4-Wheel Differential Drive Robot with LiDAR SLAM</span>
-            <span class="p-date">Jan – Feb 2026</span>
+            <span class="p-title">4-Wheel Differential Drive Robot with LiDAR SLAM[cite: 3]</span>
+            <span class="p-date">Jan – Feb 2026[cite: 3]</span>
           </div>
           <p class="p-desc">
-            Built a differential-drive robot with a 360° LiDAR (8 m range, 30 Hz) modelled in URDF/Xacro; deployed SLAM Toolbox for occupancy-grid mapping across a 4-room arena; wrote a Python node classifying scan zones as DANGER/CAUTION/SAFE, with automated Excel analytics across 6 algorithms.
+            Built a differential-drive robot with a 360° LiDAR (8 m range, 30 Hz) modelled in URDF/Xacro; deployed SLAM Toolbox for occupancy-grid mapping across a 4-room arena; wrote a Python node classifying scan zones as DANGER/CAUTION/SAFE, with automated Excel analytics across 6 algorithms[cite: 3].
           </p>
           <div class="tech-pills" style="margin-bottom:18px;">
             <span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo</span><span class="tpill">Python</span><span class="tpill">RViz</span><span class="tpill">URDF / Xacro</span><span class="tpill">SLAM Toolbox</span><span class="tpill">OpenPyXL</span>
           </div>
           <div class="p-actions">
-            <a href="https://github.com/luckybisht21/diff_robott_ws" target="_blank" rel="noopener" class="p-link">Open Workspace Repository ↗</a>
+            <a href="https://github.com/luckybisht21/diff_robott_ws" target="_blank" rel="noopener" class="p-link">Open Workspace Repository ↗[cite: 3]</a>
           </div>
         </div>
       </div>
@@ -937,70 +973,70 @@ footer{
       <div class="matrix-panel">
         <div class="m-panel-head">Core Languages <span>[CAT-01]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">Python</span>
-          <span class="matrix-tag">C++</span>
-          <span class="matrix-tag">MATLAB</span>
+          <span class="matrix-tag">Python[cite: 3]</span>
+          <span class="matrix-tag">C++[cite: 3]</span>
+          <span class="matrix-tag">MATLAB[cite: 3]</span>
         </div>
       </div>
 
       <div class="matrix-panel">
         <div class="m-panel-head">Robotics &amp; Middleware <span>[CAT-02]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">ROS2 Humble</span>
-          <span class="matrix-tag">Nav2</span>
-          <span class="matrix-tag">SLAM Toolbox</span>
-          <span class="matrix-tag">micro-ROS</span>
-          <span class="matrix-tag">Gazebo (Classic/Ignition)</span>
-          <span class="matrix-tag">URDF/Xacro</span>
-          <span class="matrix-tag">RViz</span>
+          <span class="matrix-tag">ROS2 Humble[cite: 3]</span>
+          <span class="matrix-tag">Nav2[cite: 3]</span>
+          <span class="matrix-tag">SLAM Toolbox[cite: 3]</span>
+          <span class="matrix-tag">micro-ROS[cite: 3]</span>
+          <span class="matrix-tag">Gazebo (Classic/Ignition)[cite: 3]</span>
+          <span class="matrix-tag">URDF/Xacro[cite: 3]</span>
+          <span class="matrix-tag">RViz[cite: 3]</span>
         </div>
       </div>
 
       <div class="matrix-panel">
         <div class="m-panel-head">Embedded &amp; Hardware <span>[CAT-03]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">Raspberry Pi 5</span>
-          <span class="matrix-tag">ESP32</span>
-          <span class="matrix-tag">IMU</span>
-          <span class="matrix-tag">LiDAR</span>
-          <span class="matrix-tag">ToF Sensors</span>
-          <span class="matrix-tag">GPS</span>
-          <span class="matrix-tag">DVL</span>
-          <span class="matrix-tag">Encoders</span>
+          <span class="matrix-tag">Raspberry Pi 5[cite: 3]</span>
+          <span class="matrix-tag">ESP32[cite: 3]</span>
+          <span class="matrix-tag">IMU[cite: 3]</span>
+          <span class="matrix-tag">LiDAR[cite: 3]</span>
+          <span class="matrix-tag">ToF Sensors[cite: 3]</span>
+          <span class="matrix-tag">GPS[cite: 3]</span>
+          <span class="matrix-tag">DVL[cite: 3]</span>
+          <span class="matrix-tag">Encoders[cite: 3]</span>
         </div>
       </div>
 
       <div class="matrix-panel">
         <div class="m-panel-head">Core Concepts <span>[CAT-04]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">EKF Sensor Fusion</span>
-          <span class="matrix-tag">PID Control</span>
-          <span class="matrix-tag">Autonomous Navigation</span>
-          <span class="matrix-tag">Occupancy-Grid Mapping</span>
+          <span class="matrix-tag">EKF Sensor Fusion[cite: 3]</span>
+          <span class="matrix-tag">PID Control[cite: 3]</span>
+          <span class="matrix-tag">Autonomous Navigation[cite: 3]</span>
+          <span class="matrix-tag">Occupancy-Grid Mapping[cite: 3]</span>
         </div>
       </div>
 
       <div class="matrix-panel">
         <div class="m-panel-head">Engineering Tools <span>[CAT-05]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">Git / GitHub</span>
-          <span class="matrix-tag">Linux (Ubuntu)</span>
-          <span class="matrix-tag">OpenPyXL</span>
-          <span class="matrix-tag">Pandas</span>
-          <span class="matrix-tag">NumPy</span>
+          <span class="matrix-tag">Git / GitHub[cite: 3]</span>
+          <span class="matrix-tag">Linux (Ubuntu)[cite: 3]</span>
+          <span class="matrix-tag">OpenPyXL[cite: 3]</span>
+          <span class="matrix-tag">Pandas[cite: 3]</span>
+          <span class="matrix-tag">NumPy[cite: 3]</span>
         </div>
       </div>
 
       <div class="matrix-panel">
         <div class="m-panel-head">Problem Solving &amp; DSA <span>[CAT-06]</span></div>
         <div class="tag-collection">
-          <span class="matrix-tag">200+ Problems Solved</span>
-          <span class="matrix-tag">Striver A2Z Sheet</span>
-          <span class="matrix-tag">Arrays</span>
-          <span class="matrix-tag">Trees</span>
-          <span class="matrix-tag">Graphs</span>
-          <span class="matrix-tag">Dynamic Programming</span>
-          <span class="matrix-tag">Recursion</span>
+          <span class="matrix-tag">200+ Problems Solved[cite: 3]</span>
+          <span class="matrix-tag">Striver A2Z Sheet[cite: 3]</span>
+          <span class="matrix-tag">Arrays[cite: 3]</span>
+          <span class="matrix-tag">Trees[cite: 3]</span>
+          <span class="matrix-tag">Graphs[cite: 3]</span>
+          <span class="matrix-tag">Dynamic Programming[cite: 3]</span>
+          <span class="matrix-tag">Recursion[cite: 3]</span>
         </div>
       </div>
     </div>
@@ -1023,37 +1059,37 @@ footer{
     <div class="stamp-grid reveal">
       <div class="stamp">
         <div class="st-badge">FINALIST</div>
-        <div class="st-title">NIMESHA Hardware Hackathon 2025</div>
-        <div class="st-desc">24-hr Prototyping · Karuyantra Robotics Club</div>
+        <div class="st-title">NIMESHA Hardware Hackathon 2025[cite: 3]</div>
+        <div class="st-desc">24-hr Prototyping · Karuyantra Robotics Club[cite: 3]</div>
       </div>
 
       <div class="stamp">
         <div class="st-badge">TOP 50</div>
-        <div class="st-title">Bharat Auto Expo 2025</div>
-        <div class="st-desc">Road &amp; Traffic Safety Innovation</div>
+        <div class="st-title">Bharat Auto Expo 2025[cite: 3]</div>
+        <div class="st-desc">Road &amp; Traffic Safety Innovation[cite: 3]</div>
       </div>
 
       <div class="stamp">
         <div class="st-badge">2ND PLACE</div>
-        <div class="st-title">Shark Tank — College Edition 2024</div>
-        <div class="st-desc">Autonomous Robotics Commercialization Pitch</div>
+        <div class="st-title">Shark Tank — College Edition 2024[cite: 3]</div>
+        <div class="st-desc">Autonomous Robotics Commercialization Pitch[cite: 3]</div>
       </div>
 
       <div class="stamp">
         <div class="st-badge">FINALIST</div>
-        <div class="st-title">IPU Innovation 2024</div>
-        <div class="st-desc">Maritime Security Research Track</div>
+        <div class="st-title">IPU Innovation 2024[cite: 3]</div>
+        <div class="st-desc">Maritime Security Research Track[cite: 3]</div>
       </div>
     </div>
 
     <div class="cert-table reveal" style="margin-top:40px;">
       <div class="cert-row">
-        <span>Samsung Innovation Campus — Artificial Intelligence</span>
-        <span>2025–2026</span>
+        <span>Samsung Innovation Campus — Artificial Intelligence[cite: 3]</span>
+        <span>2025–2026[cite: 3]</span>
       </div>
       <div class="cert-row">
-        <span>Introduction to IoT — Cisco</span>
-        <span>2025</span>
+        <span>Introduction to IoT — Cisco[cite: 3]</span>
+        <span>2025[cite: 3]</span>
       </div>
     </div>
   </div>
@@ -1076,7 +1112,7 @@ footer{
       <div class="contact-box">
         <h3>Seeking Robotics &amp; Embedded Roles</h3>
         <p>
-          B.Tech Automation &amp; Robotics undergraduate seeking robotics and embedded systems engineering roles. Actively developing SLAM, ROS2 navigation stacks, and real-time embedded sensor interfaces.
+          B.Tech Automation &amp; Robotics undergraduate seeking robotics and embedded systems engineering roles[cite: 3]. Actively developing SLAM, ROS2 navigation stacks, and real-time embedded sensor interfaces[cite: 3].
         </p>
         <a href="mailto:luckybisht0094@gmail.com" class="btn btn-fill">Send Transmission →</a>
       </div>
@@ -1084,21 +1120,21 @@ footer{
       <div class="terminal-channels">
         <div class="channel-row">
           <span class="c-sym">✉</span>
-          <span>luckybisht0094@gmail.com</span>
+          <span>luckybisht0094@gmail.com[cite: 3]</span>
           <button class="c-copy" onclick="copyValue(event,'luckybisht0094@gmail.com',this)">COPY</button>
         </div>
         <div class="channel-row">
           <span class="c-sym">☎</span>
-          <span>+91-8287356673</span>
+          <span>+91-8287356673[cite: 3]</span>
           <button class="c-copy" onclick="copyValue(event,'+918287356673',this)">COPY</button>
         </div>
         <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="channel-row">
           <span class="c-sym">⌥</span>
-          <span>github.com/luckybisht21</span>
+          <span>github.com/luckybisht21[cite: 3]</span>
         </a>
         <a href="https://linkedin.com/in/luckybisht" target="_blank" rel="noopener" class="channel-row">
           <span class="c-sym">◈</span>
-          <span>linkedin.com/in/luckybisht</span>
+          <span>linkedin.com/in/luckybisht[cite: 3]</span>
         </a>
       </div>
     </div>
@@ -1107,9 +1143,9 @@ footer{
 
 <footer>
   <div class="wrap foot-content">
-    <span>© 2026 LUCKY BISHT · DELHI, INDIA</span>
-    <span>B.TECH AUTOMATION &amp; ROBOTICS · GGSIPU (2023–2027)</span>
-    <span>REV. 3 — SYNCED WITH CV</span>
+    <span>© 2026 LUCKY BISHT · DELHI, INDIA[cite: 3]</span>
+    <span>B.TECH AUTOMATION &amp; ROBOTICS · GGSIPU (2023–2027)[cite: 3]</span>
+    <span>REV. 4 — TELEMETRY UI INTEGRATED</span>
   </div>
 </footer>
 
