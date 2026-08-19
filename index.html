@@ -3,348 +3,652 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Lucky Bisht — Robotics & Software Engineer</title>
-<meta name="description" content="Lucky Bisht — Automation & Robotics Engineer. ROS2, Gazebo, SLAM, EKF, ESP32, micro-ROS. B.Tech GGSIPU Delhi. Flywheel Aerospace & IIT Mandi."/>
+<title>Lucky Bisht — Robotics &amp; Autonomous Systems Engineer</title>
+<meta name="description" content="Lucky Bisht — Robotics Engineer specializing in SLAM, ROS 2 Nav2, Sensor Fusion, and Embedded Control Systems. B.Tech Automation & Robotics, GGSIPU Delhi."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ─── TOKENS ─────────────────────────────────────────────────────── */
 :root{
-  --ink:#06090f;
-  --ink2:#090e18;
-  --card:#0c1320;
-  --card2:#0f1826;
-  --edge:#1a2d44;
-  --edge2:#122236;
-  --hi:#38bdf8;       /* sky blue */
-  --hi2:#0ea5e9;
-  --em:#22d3ee;       /* cyan */
-  --em2:#06b6d4;
-  --pulse:#f97316;    /* orange accent */
-  --green:#4ade80;
-  --text:#c8dff0;
-  --text2:#7ca0bc;
-  --text3:#3d607a;
-  --ff-head:'Syne',sans-serif;
-  --ff-body:'Space Grotesk',sans-serif;
-  --ff-mono:'JetBrains Mono',monospace;
-  --r:6px;
+  --blue-deep:#081b33;
+  --blue-mid:#0f2d52;
+  --blue-surface:#0b2444;
+  --blue-panel:#133863;
+  --line:#7fa8d6;
+  --line-bright:#b8d5f8;
+  --line-dim:#2a486c;
+  --ink-light:#e2ecf7;
+  --ink-muted:#94adc7;
+  --accent:#ff6b35;
+  --accent-glow:rgba(255,107,53,0.25);
+  --ok:#38d996;
+  --ok-glow:rgba(56,217,150,0.2);
+  --ff-head:'Space Grotesk',sans-serif;
+  --ff-body:'IBM Plex Sans',sans-serif;
+  --ff-mono:'IBM Plex Mono',monospace;
 }
 
-/* ─── RESET ──────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;font-size:16px;}
-body{background:var(--ink);color:var(--text);font-family:var(--ff-body);font-weight:400;overflow-x:hidden;cursor:none;line-height:1.6;}
+html{scroll-behavior:smooth;}
+body{
+  background-color:var(--blue-deep);
+  color:var(--line);
+  font-family:var(--ff-body);
+  line-height:1.6;
+  background-image:
+    radial-gradient(var(--blue-mid) 1px, transparent 1px),
+    linear-gradient(to right, rgba(42,72,108,0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42,72,108,0.25) 1px, transparent 1px);
+  background-size:40px 40px, 20px 20px, 20px 20px;
+  overflow-x:hidden;
+}
 
-/* ─── CUSTOM CURSOR ──────────────────────────────────────────────── */
-.cur{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
-.cur-dot{width:8px;height:8px;background:#fff;border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:transform .1s;}
-.cur-ring{width:40px;height:40px;border:1.5px solid rgba(56,189,248,.6);border-radius:50%;position:fixed;transform:translate(-50%,-50%);transition:left .14s ease-out,top .14s ease-out,width .3s,height .3s,border-color .3s;}
-body.hovering .cur-ring{width:60px;height:60px;border-color:var(--hi);}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 36px;}
+@media(max-width:768px){.wrap{padding:0 20px;}}
 
-/* ─── CANVAS BG ──────────────────────────────────────────────────── */
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;}
+/* ── Technical Nav ─────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:14px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(8,27,51,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line-dim);
+}
+.nav-logo{
+  font-family:var(--ff-mono);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  color:#fff;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo::before{
+  content:'';display:inline-block;width:10px;height:10px;
+  border:2px solid var(--accent);
+}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--line);
+  transition:all .2s ease;
+}
+.nav-links a:hover{color:#fff;text-shadow:0 0 8px var(--line);}
+.nav-status{
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--ok);
+  border:1px solid var(--ok);
+  background:var(--ok-glow);
+  padding:5px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-status i{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ok);
+  box-shadow:0 0 8px var(--ok);
+  animation:pulse 2s infinite ease-in-out;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)}}
+@media(max-width:860px){.nav-links{display:none;}}
 
-/* ─── NAV ────────────────────────────────────────────────────────── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,9,15,.72);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid rgba(26,45,68,.6);}
-.nav-logo{font-family:var(--ff-head);font-weight:800;font-size:18px;color:#fff;text-decoration:none;letter-spacing:-0.5px;}
-.nav-logo em{color:var(--hi);font-style:normal;}
-.nav-links{display:flex;gap:36px;list-style:none;}
-.nav-links a{font-family:var(--ff-mono);font-size:11px;color:var(--text2);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s;position:relative;}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--hi);transition:width .25s;}
-.nav-links a:hover,.nav-links a.active{color:var(--hi);}
-.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
-.nav-pill{font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;padding:6px 14px;border:1px solid var(--green);color:var(--green);background:rgba(74,222,128,.07);display:flex;align-items:center;gap:7px;}
-.nav-pill-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pls 2s infinite;}
-@keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+/* ── Engineering Title Block ───────────────────────────────── */
+.tblock{
+  border:1.5px solid var(--line);
+  background:rgba(11,36,68,0.7);
+  font-family:var(--ff-mono);
+  font-size:11px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+}
+.tblock-cell{
+  padding:10px 14px;
+  border-right:1px solid var(--line-dim);
+  border-top:1px solid var(--line-dim);
+  position:relative;
+}
+.tblock-cell:nth-child(4n){border-right:none;}
+.tblock-cell:nth-child(-n+4){border-top:none;}
+.tblock-cell small{
+  display:block;
+  color:var(--line-dim);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:2px;
+}
+.tblock-cell b{
+  color:#fff;
+  font-size:12.5px;
+  font-weight:600;
+  font-family:var(--ff-body);
+}
+@media(max-width:700px){.tblock{grid-template-columns:repeat(2,1fr);}.tblock-cell:nth-child(2n){border-right:none;}}
 
-/* ─── SECTIONS ───────────────────────────────────────────────────── */
-section{position:relative;z-index:2;}
-.wrap{max-width:1120px;margin:0 auto;padding:0 60px;}
+/* ── Hero Section ──────────────────────────────────────────── */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 60px;}
+.sys-id{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+}
+.sys-id::after{content:'';flex:1;max-width:80px;height:1px;background:var(--accent);}
+h1.name{
+  font-family:var(--ff-head);
+  font-weight:700;
+  font-size:clamp(46px,7vw,86px);
+  color:#fff;
+  letter-spacing:-2px;
+  line-height:0.95;
+}
+h1.name em{font-style:normal;color:var(--accent);}
+.role-pills{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin:20px 0;
+  font-family:var(--ff-mono);
+  font-size:11px;
+}
+.role-pill{
+  background:var(--blue-surface);
+  border:1px solid var(--line-dim);
+  padding:4px 10px;
+  color:var(--line-bright);
+}
+.role-pill b{color:var(--accent);}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:44px;
+  align-items:center;
+  margin-top:20px;
+}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;}}
+.hero-desc{
+  font-size:16px;
+  color:var(--ink-light);
+  line-height:1.8;
+  margin-bottom:28px;
+}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  padding:13px 24px;
+  text-transform:uppercase;
+  transition:all .25s ease;
+  display:inline-flex;align-items:center;gap:8px;
+  position:relative;
+}
+.btn-fill{
+  background:var(--accent);
+  border:1.5px solid var(--accent);
+  color:var(--blue-deep);
+}
+.btn-fill:hover{
+  background:#ff8452;
+  box-shadow:0 0 20px var(--accent-glow);
+}
+.btn-ghost{
+  border:1.5px solid var(--line-dim);
+  color:#fff;
+  background:rgba(11,36,68,0.4);
+}
+.btn-ghost:hover{
+  border-color:var(--line);
+  background:var(--blue-surface);
+}
 
-/* ─── HERO ───────────────────────────────────────────────────────── */
-#hero{min-height:100vh;display:flex;align-items:center;padding:100px 60px 60px;overflow:hidden;}
-.hero-inner{max-width:1120px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:center;}
-.hero-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--em);letter-spacing:4px;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:up .6s .2s forwards;}
-.hero-name{font-family:var(--ff-head);font-size:clamp(52px,7vw,88px);font-weight:800;line-height:.95;color:#fff;letter-spacing:-2px;opacity:0;animation:up .7s .4s forwards;}
-.hero-name .accent{color:var(--hi);display:block;}
-.hero-role{margin-top:18px;font-family:var(--ff-mono);font-size:13px;color:var(--text2);letter-spacing:1px;line-height:2;opacity:0;animation:up .7s .6s forwards;}
-.hero-role span{color:var(--hi);margin:0 6px;}
-.hero-desc{margin-top:22px;font-size:16px;color:var(--text2);line-height:1.8;max-width:540px;opacity:0;animation:up .7s .75s forwards;}
-.hero-desc strong{color:var(--text);}
-.hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:up .7s .9s forwards;}
-.btn{font-family:var(--ff-mono);font-size:11px;letter-spacing:2px;padding:13px 28px;text-decoration:none;border:1px solid;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;text-transform:uppercase;position:relative;overflow:hidden;}
-.btn::before{content:'';position:absolute;inset:0;transform:translateY(101%);transition:transform .25s;}
-.btn:hover::before{transform:translateY(0);}
-.btn-fill{color:var(--ink);background:var(--hi);border-color:var(--hi);}
-.btn-fill::before{background:var(--em);}
-.btn-fill:hover{color:var(--ink);}
-.btn-ghost{color:var(--hi);background:transparent;border-color:var(--edge);}
-.btn-ghost::before{background:rgba(56,189,248,.08);}
-.hero-stats{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--edge2);border:1px solid var(--edge2);opacity:0;animation:up .7s 1.05s forwards;}
-.stat{background:var(--ink2);padding:20px 16px;text-align:center;}
-.stat-n{font-family:var(--ff-head);font-size:28px;font-weight:800;color:var(--hi);display:block;line-height:1;}
-.stat-l{font-family:var(--ff-mono);font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:5px;}
+/* Technical Vector Frame */
+.schematic-box{
+  border:1.5px solid var(--line);
+  background:rgba(11,36,68,0.6);
+  padding:20px;
+  position:relative;
+  box-shadow:inset 0 0 20px rgba(0,0,0,0.5);
+}
+.schematic-box::before, .schematic-box::after{
+  content:'';position:absolute;width:8px;height:8px;border:1.5px solid var(--accent);
+}
+.schematic-box::before{top:-4px;left:-4px;border-right:none;border-bottom:none;}
+.schematic-box::after{bottom:-4px;right:-4px;border-left:none;border-top:none;}
+.schematic-box svg{width:100%;height:auto;display:block;}
+.schematic-caption{
+  margin-top:12px;
+  font-family:var(--ff-mono);
+  font-size:9.5px;
+  color:var(--line-dim);
+  letter-spacing:1px;
+  display:flex;justify-content:space-between;
+  border-top:1px solid var(--line-dim);
+  padding-top:8px;
+}
 
-/* hero card */
-.hero-card{background:var(--card);border:1px solid var(--edge);padding:28px;position:relative;opacity:0;animation:up .8s .5s forwards;}
-.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--hi),var(--em),var(--pulse));}
-.hc-label{font-family:var(--ff-mono);font-size:9px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--edge2);}
-.hc-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--edge2);}
-.hc-row:last-child{border-bottom:none;}
-.hc-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
-.hc-info{}
-.hc-key{font-family:var(--ff-mono);font-size:10px;color:var(--text3);letter-spacing:1px;display:block;}
-.hc-val{font-size:13px;color:var(--text);font-weight:500;margin-top:2px;}
-.hc-val em{color:var(--hi);font-style:normal;}
-.badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;}
-.badge{font-family:var(--ff-mono);font-size:9px;padding:4px 10px;letter-spacing:1px;border:1px solid var(--edge);color:var(--text2);background:var(--ink2);}
-.badge.hi{border-color:rgba(56,189,248,.4);color:var(--hi);background:rgba(56,189,248,.05);}
-.badge.gr{border-color:rgba(74,222,128,.4);color:var(--green);background:rgba(74,222,128,.05);}
-.badge.or{border-color:rgba(249,115,22,.4);color:var(--pulse);background:rgba(249,115,22,.05);}
+/* ── Section Scaffolding ───────────────────────────────────── */
+section{padding:100px 0;position:relative;}
+.sec-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:44px;
+  border-bottom:1px solid var(--line-dim);
+  padding-bottom:16px;
+}
+.sec-tag{
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.sec-title{
+  font-family:var(--ff-head);
+  font-size:clamp(26px,3.6vw,38px);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-0.5px;
+}
+.sec-sheet{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--line-dim);
+  letter-spacing:1.5px;
+}
+.divider{height:1px;background:var(--line-dim);width:100%;}
 
-@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+/* ── Experience BOM Table ─────────────────────────────────── */
+.bom{
+  border:1px solid var(--line-dim);
+  background:rgba(8,27,51,0.5);
+}
+.bom-head{
+  display:grid;
+  grid-template-columns:70px 1.8fr 1fr 110px;
+  background:var(--blue-panel);
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--line-bright);
+  border-bottom:1px solid var(--line-dim);
+}
+.bom-head div{padding:12px 16px;border-right:1px solid var(--line-dim);}
+.bom-head div:last-child{border-right:none;}
+.bom-row{border-bottom:1px solid var(--line-dim);}
+.bom-row:last-child{border-bottom:none;}
+.bom-meta{
+  display:grid;
+  grid-template-columns:70px 1.8fr 1fr 110px;
+}
+.bom-meta div{padding:18px 16px;border-right:1px solid var(--line-dim);}
+.bom-meta div:last-child{border-right:none;}
+.bom-idx{font-family:var(--ff-mono);color:var(--accent);font-weight:700;font-size:15px;}
+.bom-role-title{font-size:16px;font-weight:600;color:#fff;}
+.bom-org{font-family:var(--ff-mono);font-size:12px;color:var(--line);margin-top:2px;}
+.bom-timeline{font-family:var(--ff-mono);font-size:11.5px;color:var(--ink-muted);}
+.badge{
+  display:inline-block;padding:3px 8px;font-family:var(--ff-mono);font-size:9.5px;font-weight:600;letter-spacing:1px;
+}
+.badge-active{color:var(--ok);border:1px solid var(--ok);background:var(--ok-glow);}
+.badge-past{color:var(--line-dim);border:1px solid var(--line-dim);}
 
-/* ─── SECTION HEADERS ─────────────────────────────────────────────── */
-.sec-head{margin-bottom:52px;}
-.sec-tag{font-family:var(--ff-mono);font-size:10px;color:var(--em);letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.sec-tag::before{content:'';width:24px;height:1px;background:var(--em);}
-.sec-title{font-family:var(--ff-head);font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;}
-.sec-title em{color:var(--hi);font-style:normal;}
+.bom-content{padding:0 24px 22px 86px;}
+@media(max-width:768px){
+  .bom-head{display:none;}
+  .bom-meta{grid-template-columns:1fr;gap:6px;}
+  .bom-meta div{border-right:none;padding:12px 16px 0;}
+  .bom-content{padding:12px 16px 20px;}
+}
+.bom-content ul{list-style:none;}
+.bom-content li{
+  font-size:14px;
+  color:var(--ink-light);
+  line-height:1.75;
+  padding:4px 0 4px 18px;
+  position:relative;
+}
+.bom-content li::before{
+  content:'›';position:absolute;left:0;color:var(--accent);font-weight:700;font-size:16px;line-height:1;
+}
+.tech-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.tpill{
+  font-family:var(--ff-mono);
+  font-size:9.5px;
+  color:var(--line-bright);
+  background:var(--blue-surface);
+  border:1px solid var(--line-dim);
+  padding:3px 10px;
+}
 
-/* ─── EXPERIENCE ──────────────────────────────────────────────────── */
-#experience{padding:100px 0;background:var(--ink2);}
-.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.exp-card{background:var(--card);border:1px solid var(--edge);padding:32px;position:relative;transition:border-color .3s,transform .3s;}
-.exp-card:hover{border-color:var(--hi);transform:translateY(-3px);}
-.exp-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--hi),var(--em));transition:width .4s;}
-.exp-card:hover::after{width:100%;}
-.exp-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;padding:4px 12px;margin-bottom:20px;}
-.exp-badge.active{color:var(--green);border:1px solid rgba(74,222,128,.4);background:rgba(74,222,128,.05);}
-.exp-badge.past{color:var(--text3);border:1px solid var(--edge2);}
-.exp-badge.active::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:pls 2s infinite;}
-.exp-date{font-family:var(--ff-mono);font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:8px;}
-.exp-title{font-family:var(--ff-head);font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
-.exp-org{font-family:var(--ff-mono);font-size:12px;color:var(--hi);margin-bottom:18px;letter-spacing:.5px;}
-.exp-bullets{list-style:none;}
-.exp-bullets li{font-size:13.5px;color:var(--text2);line-height:1.75;padding:5px 0 5px 18px;position:relative;}
-.exp-bullets li::before{content:'›';position:absolute;left:0;color:var(--hi);font-size:16px;line-height:1.4;}
-.exp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
-.exp-tag{font-family:var(--ff-mono);font-size:9px;color:var(--text3);border:1px solid var(--edge2);padding:3px 9px;letter-spacing:1px;}
+/* Education strip */
+.edu-card{
+  margin-top:24px;
+  border:1px solid var(--line-dim);
+  background:rgba(11,36,68,0.4);
+  padding:20px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.edu-left b{font-size:16px;color:#fff;}
+.edu-left p{font-family:var(--ff-mono);font-size:12px;color:var(--line);margin-top:4px;}
+.edu-cgpa{text-align:right;}
+.edu-cgpa .val{font-family:var(--ff-mono);font-size:24px;font-weight:700;color:var(--accent);}
+.edu-cgpa .lbl{font-family:var(--ff-mono);font-size:9px;color:var(--line-dim);letter-spacing:1px;text-transform:uppercase;}
 
-/* ─── PROJECTS ────────────────────────────────────────────────────── */
-#projects{padding:100px 0;}
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.proj-card{background:var(--card);border:1px solid var(--edge);overflow:hidden;transition:transform .3s,border-color .3s;position:relative;display:flex;flex-direction:column;}
-.proj-card:hover{transform:translateY(-5px);border-color:var(--edge);}
-.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--edge);transition:background .3s;}
-.proj-card:nth-child(1)::before{background:linear-gradient(90deg,var(--hi),var(--em));}
-.proj-card:nth-child(2)::before{background:linear-gradient(90deg,var(--pulse),#fb923c);}
-.proj-card:nth-child(3)::before{background:linear-gradient(90deg,var(--green),#86efac);}
-.proj-card:nth-child(4)::before{background:linear-gradient(90deg,#a78bfa,#c4b5fd);}
-.proj-thumb{height:160px;background:var(--card2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-.proj-thumb-icon{font-size:64px;opacity:.15;transition:opacity .3s,transform .4s;}
-.proj-card:hover .proj-thumb-icon{opacity:.25;transform:scale(1.1);}
-.proj-num-badge{position:absolute;top:14px;left:14px;font-family:var(--ff-mono);font-size:9px;color:var(--text3);letter-spacing:2px;background:rgba(6,9,15,.7);padding:3px 8px;border:1px solid var(--edge2);}
-.proj-body{padding:24px;flex:1;display:flex;flex-direction:column;}
-.proj-title{font-family:var(--ff-head);font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3;}
-.proj-desc{font-size:12.5px;color:var(--text2);line-height:1.75;flex:1;margin-bottom:18px;}
-.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
-.ptag{font-family:var(--ff-mono);font-size:9px;color:var(--hi);border:1px solid rgba(56,189,248,.2);padding:2px 8px;letter-spacing:.5px;background:rgba(56,189,248,.04);}
-.proj-link{font-family:var(--ff-mono);font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:2px;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;transition:color .2s;}
-.proj-link:hover{color:var(--hi);}
-.proj-link svg{transition:transform .2s;}
-.proj-link:hover svg{transform:translateX(3px);}
+/* ── Visual Project Cards ──────────────────────────────────── */
+.projects-grid{display:flex;flex-direction:column;gap:30px;}
+.project-card{
+  border:1.5px solid var(--line-dim);
+  background:var(--blue-surface);
+  display:grid;
+  grid-template-columns:360px 1fr;
+  transition:border-color .25s ease;
+}
+.project-card:hover{border-color:var(--line);}
+@media(max-width:960px){.project-card{grid-template-columns:1fr;}}
 
-/* featured project */
-.proj-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.4fr 1fr;}
-.proj-card.featured .proj-thumb{height:auto;min-height:200px;}
-.proj-card.featured .proj-body{padding:32px;}
-.proj-card.featured .proj-title{font-size:20px;}
-.proj-card.featured .proj-desc{font-size:14px;}
+.project-visual{
+  background:rgba(8,27,51,0.85);
+  border-right:1px solid var(--line-dim);
+  display:flex;flex-direction:column;
+  position:relative;
+}
+@media(max-width:960px){.project-visual{border-right:none;border-bottom:1px solid var(--line-dim);}}
 
-/* ─── SKILLS ──────────────────────────────────────────────────────── */
-#skills{padding:100px 0;background:var(--ink2);}
-.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.skill-panel{background:var(--card);border:1px solid var(--edge);padding:28px;}
-.sp-head{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--edge2);}
-.sp-icon{width:34px;height:34px;border:1px solid var(--edge);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.sp-label{font-family:var(--ff-mono);font-size:10px;color:var(--hi);letter-spacing:3px;text-transform:uppercase;}
-.sp-pills{display:flex;flex-wrap:wrap;gap:7px;}
-.pill{font-family:var(--ff-mono);font-size:10px;color:var(--text);border:1px solid var(--edge2);padding:5px 13px;letter-spacing:.5px;background:var(--ink2);transition:all .2s;}
-.pill:hover{border-color:var(--hi);color:var(--hi);background:rgba(56,189,248,.06);}
-.pill.hi{border-color:rgba(56,189,248,.3);color:var(--hi);background:rgba(56,189,248,.05);}
-.pill.gr{border-color:rgba(74,222,128,.3);color:var(--green);background:rgba(74,222,128,.05);}
-.pill.or{border-color:rgba(249,115,22,.3);color:var(--pulse);background:rgba(249,115,22,.05);}
+.visual-canvas{
+  padding:20px;
+  display:flex;align-items:center;justify-content:center;
+  flex:1;
+}
+.visual-canvas svg{width:100%;height:auto;max-height:220px;display:block;}
 
-/* ─── ACHIEVEMENTS ─────────────────────────────────────────────────── */
-#achievements{padding:100px 0;}
-.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
-.ach-card{border:1px solid var(--edge);background:var(--card);padding:26px 22px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
-.ach-card:hover{border-color:var(--hi);transform:translateY(-3px);}
-.ach-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(56,189,248,.05),transparent 70%);pointer-events:none;}
-.ach-icon{font-size:30px;display:block;margin-bottom:14px;}
-.ach-title{font-family:var(--ff-head);font-size:12px;font-weight:700;color:var(--hi);letter-spacing:.5px;line-height:1.4;margin-bottom:8px;text-transform:uppercase;}
-.ach-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.metric-strip{
+  border-top:1px solid var(--line-dim);
+  background:var(--blue-deep);
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  font-family:var(--ff-mono);
+}
+.m-cell{padding:8px 12px;border-right:1px solid var(--line-dim);}
+.m-cell:last-child{border-right:none;}
+.m-cell small{display:block;font-size:8px;color:var(--line-dim);text-transform:uppercase;letter-spacing:1px;}
+.m-cell b{color:var(--ok);font-size:12px;}
 
-/* certs */
-.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
-.cert-item{background:var(--card);border:1px solid var(--edge2);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:border-color .2s;}
-.cert-item:hover{border-color:var(--edge);}
-.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--em);flex-shrink:0;}
-.cert-name{font-size:11.5px;color:var(--text);line-height:1.4;}
-.cert-name small{display:block;font-family:var(--ff-mono);font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:1px;}
+.project-details{padding:28px 32px;display:flex;flex-direction:column;}
+.p-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.p-title{font-family:var(--ff-head);font-size:21px;color:#fff;font-weight:700;}
+.p-date{font-family:var(--ff-mono);font-size:11px;color:var(--line-dim);}
+.p-desc{font-size:14px;color:var(--ink-light);line-height:1.8;margin-bottom:18px;}
+.p-actions{margin-top:auto;display:flex;align-items:center;gap:18px;padding-top:14px;border-top:1px dashed var(--line-dim);}
+.p-link{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:1px;
+  color:var(--accent);
+  display:inline-flex;align-items:center;gap:6px;
+  font-weight:600;
+  transition:all .2s;
+}
+.p-link:hover{color:#fff;text-shadow:0 0 6px var(--accent);}
 
-/* ─── CONTACT ─────────────────────────────────────────────────────── */
-#contact{padding:100px 0;background:var(--ink2);}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
-.contact-left h3{font-family:var(--ff-head);font-size:22px;font-weight:700;color:#fff;margin-bottom:14px;}
-.contact-left p{font-size:14.5px;color:var(--text2);line-height:1.8;margin-bottom:24px;}
-.contact-links{display:flex;flex-direction:column;gap:10px;}
-.clink{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1px solid var(--edge2);background:var(--card);text-decoration:none;color:var(--text);font-family:var(--ff-mono);font-size:11px;letter-spacing:.5px;transition:border-color .2s,background .2s,color .2s;position:relative;overflow:hidden;}
-.clink::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);opacity:.08;transition:width .25s;}
-.clink:hover{border-color:var(--hi);color:var(--hi);}
-.clink:hover::before{width:100%;}
-.clink-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center;}
-.clink-text{flex:1;}
-.copy-btn{margin-left:auto;font-family:var(--ff-mono);font-size:9px;color:var(--text3);background:none;border:1px solid var(--edge2);padding:2px 8px;cursor:pointer;letter-spacing:1px;transition:all .2s;}
-.copy-btn:hover,.copy-btn.copied{color:var(--green);border-color:var(--green);}
-.share-box{margin-top:28px;padding:22px;border:1px solid rgba(74,222,128,.3);background:rgba(74,222,128,.04);}
-.share-box-label{font-family:var(--ff-mono);font-size:9px;color:var(--green);letter-spacing:3px;margin-bottom:14px;text-transform:uppercase;}
-.share-row{display:flex;gap:8px;align-items:center;}
-.share-url{font-family:var(--ff-mono);font-size:11px;color:var(--green);padding:9px 13px;border:1px solid rgba(74,222,128,.25);background:rgba(74,222,128,.05);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.share-copy{font-family:var(--ff-mono);font-size:10px;color:var(--ink);background:var(--green);border:none;padding:9px 18px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:background .2s;}
-.share-copy:hover,.share-copy.copied{background:var(--hi);}
+/* ── Technical Skills Matrix ───────────────────────────────── */
+.matrix-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line-dim);
+  border:1px solid var(--line-dim);
+}
+@media(max-width:900px){.matrix-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.matrix-grid{grid-template-columns:1fr;}}
+.matrix-panel{background:var(--blue-deep);padding:24px;}
+.m-panel-head{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line-dim);
+  display:flex;justify-content:space-between;
+}
+.m-panel-head span{color:var(--line-dim);}
+.tag-collection{display:flex;flex-wrap:wrap;gap:6px;}
+.matrix-tag{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--line-bright);
+  border:1px solid var(--line-dim);
+  background:rgba(11,36,68,0.5);
+  padding:4px 10px;
+}
 
-/* ─── FOOTER ──────────────────────────────────────────────────────── */
-footer{background:var(--ink);border-top:1px solid var(--edge2);padding:28px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;position:relative;z-index:2;}
-.footer-t{font-family:var(--ff-mono);font-size:10px;color:var(--text3);letter-spacing:1px;}
-.footer-t span{color:var(--hi);}
-.footer-t a{color:var(--green);text-decoration:none;}
+/* ── Achievements Stamps ───────────────────────────────────── */
+.stamp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:900px){.stamp-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.stamp-grid{grid-template-columns:1fr;}}
+.stamp{
+  border:1.5px dashed var(--accent);
+  background:rgba(255,107,53,0.03);
+  padding:20px 16px;
+  position:relative;
+  text-align:center;
+}
+.st-badge{
+  font-family:var(--ff-mono);
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:2px;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  padding:2px 8px;
+  display:inline-block;
+  margin-bottom:10px;
+}
+.st-title{font-family:var(--ff-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.st-desc{font-family:var(--ff-mono);font-size:10px;color:var(--ink-muted);line-height:1.5;}
 
-/* ─── REVEAL ─────────────────────────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.cert-table{margin-top:36px;border:1px solid var(--line-dim);}
+.cert-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;
+  border-bottom:1px solid var(--line-dim);
+  background:rgba(8,27,51,0.4);
+  font-size:13.5px;
+}
+.cert-row:last-child{border-bottom:none;}
+.cert-row span:first-child{color:#fff;}
+.cert-row span:last-child{font-family:var(--ff-mono);font-size:11px;color:var(--line-bright);}
+
+/* ── Contact Section ───────────────────────────────────────── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+@media(max-width:800px){.contact-layout{grid-template-columns:1fr;}}
+.contact-box h3{font-family:var(--ff-head);font-size:24px;color:#fff;margin-bottom:12px;}
+.contact-box p{font-size:15px;color:var(--ink-light);line-height:1.8;margin-bottom:24px;}
+.terminal-channels{
+  border:1px solid var(--line-dim);
+  background:var(--blue-deep);
+  display:flex;flex-direction:column;
+}
+.channel-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line-dim);
+  font-family:var(--ff-mono);
+  font-size:12px;
+  color:var(--line-bright);
+  transition:background .2s;
+}
+.channel-row:last-child{border-bottom:none;}
+.channel-row:hover{background:var(--blue-surface);color:#fff;}
+.c-sym{color:var(--accent);font-weight:700;}
+.c-copy{
+  margin-left:auto;
+  font-family:var(--ff-mono);
+  font-size:9px;
+  background:none;
+  border:1px solid var(--line-dim);
+  color:var(--line-dim);
+  padding:4px 8px;
+  cursor:pointer;
+  letter-spacing:1px;
+}
+.c-copy:hover,.c-copy.copied{border-color:var(--ok);color:var(--ok);}
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--line-dim);
+  padding:24px 36px;
+  background:var(--blue-deep);
+}
+.foot-content{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+  font-family:var(--ff-mono);
+  font-size:10px;
+  color:var(--line-dim);
+  letter-spacing:1px;
+}
+
+/* ── Scroll Reveal ─────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(0.16,1,0.3,1),transform .6s cubic-bezier(0.16,1,0.3,1);}
 .reveal.visible{opacity:1;transform:none;}
-
-/* ─── DIVIDER ─────────────────────────────────────────────────────── */
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--edge),transparent);}
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
-@media(max-width:900px){
-  nav{padding:14px 24px;}.nav-links{display:none;}
-  #hero{padding:80px 24px 40px;}
-  .hero-inner{grid-template-columns:1fr;gap:40px;}
-  .hero-card{display:none;}
-  .hero-stats{grid-template-columns:repeat(2,1fr);}
-  .wrap{padding:0 24px;}
-  .exp-grid,.skills-layout,.contact-grid{grid-template-columns:1fr;}
-  .proj-grid{grid-template-columns:1fr;}
-  .proj-card.featured{grid-template-columns:1fr;}
-  .ach-grid{grid-template-columns:1fr 1fr;}
-  .cert-grid{grid-template-columns:1fr 1fr;}
-  footer{flex-direction:column;text-align:center;padding:20px 24px;}
-}
-@media(max-width:600px){
-  .ach-grid{grid-template-columns:1fr;}
-  .cert-grid{grid-template-columns:1fr;}
-  .hero-stats{grid-template-columns:repeat(2,1fr);}
-}
 </style>
 </head>
 <body>
 
-<div class="cur-dot" id="dot"></div>
-<div class="cur-ring" id="ring"></div>
-<canvas id="bg-canvas"></canvas>
-
-<!-- ─── NAV ───────────────────────────────────────────────────────── -->
 <nav>
-  <a href="#hero" class="nav-logo">LUCKY<em>.</em>BISHT</a>
+  <a href="#hero" class="nav-logo">LB<span>//</span>SYS_ARCH</a>
   <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#achievements">Awards</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#experience">BOM Experience</a></li>
+    <li><a href="#projects">Deployments</a></li>
+    <li><a href="#skills">Tech Matrix</a></li>
+    <li><a href="#achievements">Inspections</a></li>
+    <li><a href="#contact">Terminal</a></li>
   </ul>
-  <div class="nav-pill">
-    <span class="nav-pill-dot"></span>
-    OPEN TO ROLES
-  </div>
+  <div class="nav-status"><i></i>SYSTEM READY · DEC 2026</div>
 </nav>
 
-<!-- ─── HERO ───────────────────────────────────────────────────────── -->
+<!-- ── HERO ─────────────────────────────────────────────────────── -->
 <section id="hero">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-eyebrow">Automation & Robotics Engineer</div>
-      <h1 class="hero-name">LUCKY<span class="accent">BISHT</span></h1>
-      <div class="hero-role">
-        ROS2 &amp; Nav2<span>·</span>Gazebo SLAM<span>·</span>EKF Fusion<span>·</span>ESP32 micro-ROS
-      </div>
-      <p class="hero-desc">
-        B.Tech at <strong>GGSIPU Delhi</strong> (CGPA 8.50/10, 2027). Building real autonomous systems — from AUV mine-surveillance pipelines to AMR navigation stacks. Currently an engineer intern at <strong>Flywheel Aerospace</strong>. IIT Mandi Research alum. 200+ LeetCode.
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-fill">↗ View Projects</a>
-        <a href="#contact" class="btn btn-ghost">→ Get In Touch</a>
-        <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="btn btn-ghost">⊙ GitHub</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-n">8.50</span><span class="stat-l">CGPA / 10</span></div>
-        <div class="stat"><span class="stat-n">200+</span><span class="stat-l">LeetCode</span></div>
-        <div class="stat"><span class="stat-n">3</span><span class="stat-l">Internships</span></div>
-        <div class="stat"><span class="stat-n">IIT</span><span class="stat-l">Mandi Alum</span></div>
-      </div>
+  <div class="wrap">
+    <div class="sys-id reveal">SPECIFICATION SHEET 01 // AUTONOMY &amp; EMBEDDED</div>
+    <h1 class="name reveal">LUCKY<br><em>BISHT</em></h1>
+    <div class="role-pills reveal">
+      <span class="role-pill"><b>CORE:</b> LiDAR SLAM</span>
+      <span class="role-pill"><b>STACK:</b> ROS 2 (Humble) / Nav2</span>
+      <span class="role-pill"><b>STATE ESTIMATION:</b> EKF / Sensor Fusion</span>
+      <span class="role-pill"><b>TARGET:</b> Raspberry Pi 5 &amp; ESP32</span>
     </div>
-    <div class="hero-card">
-      <div class="hc-label">// STATUS CARD</div>
-      <div class="hc-row">
-        <span class="hc-icon">🚀</span>
-        <div class="hc-info">
-          <span class="hc-key">CURRENT ROLE</span>
-          <div class="hc-val"><em>Robotics Engineer Intern</em><br>Flywheel Aerospace · May 2026–Present</div>
+
+    <div class="hero-grid">
+      <div>
+        <p class="hero-desc reveal">
+          Robotics &amp; Autonomous Systems Engineer (B.Tech GGSIPU Delhi). Architecting LiDAR-inertial SLAM localization and autonomous navigation stacks across quadrupeds, mobile ground rovers, and underwater vehicles. Experienced in bare-metal micro-ROS, hardware sensor driver design, and multi-sensor fusion under harsh, unstructured conditions.
+        </p>
+        <div class="hero-cta reveal">
+          <a href="#projects" class="btn btn-fill">Explore Subsystems →</a>
+          <a href="#contact" class="btn btn-ghost">Telemetry / Contact</a>
+          <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="btn btn-ghost">GitHub Pipeline ↗</a>
+        </div>
+        <div class="tblock reveal" style="margin-top:36px;">
+          <div class="tblock-cell"><small>Current Post</small><b>SLAM Intern</b></div>
+          <div class="tblock-cell"><small>Contractor</small><b>Navyug Infosolutions</b></div>
+          <div class="tblock-cell"><small>Active Since</small><b>Jun 2026</b></div>
+          <div class="tblock-cell"><small>Station</small><b>Delhi, India</b></div>
+          <div class="tblock-cell"><small>Discipline</small><b>Automation &amp; Robotics</b></div>
+          <div class="tblock-cell"><small>Institution</small><b>GGSIPU Delhi</b></div>
+          <div class="tblock-cell"><small>Index (CGPA)</small><b>8.50 / 10.0</b></div>
+          <div class="tblock-cell"><small>Commission</small><b>Class of 2027</b></div>
         </div>
       </div>
-      <div class="hc-row">
-        <span class="hc-icon">🎓</span>
-        <div class="hc-info">
-          <span class="hc-key">EDUCATION</span>
-          <div class="hc-val"><em>B.Tech Automation & Robotics</em><br>GGSIPU Delhi · Class of 2027</div>
+
+      <!-- High-detail Quadruped SLAM Vector Schematic -->
+      <div class="schematic-box reveal">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid Reticle Background -->
+          <defs>
+            <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(127,168,214,0.1)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#cadGrid)" />
+
+          <!-- Crosshairs -->
+          <g stroke="#2a486c" stroke-width="0.75" stroke-dasharray="3 3">
+            <line x1="200" y1="20" x2="200" y2="280"/>
+            <line x1="20" y1="150" x2="380" y2="150"/>
+          </g>
+
+          <!-- Quadruped Chassis & Actuators -->
+          <g stroke="#7fa8d6" stroke-width="1.3" fill="none" stroke-linejoin="round" stroke-linecap="round">
+            <!-- Main Rigid Body Frame -->
+            <polygon points="120,120 280,120 295,145 270,165 130,165 105,145" fill="rgba(19,56,99,0.5)"/>
+            
+            <!-- Sensor Payload Mast -->
+            <rect x="185" y="98" width="30" height="22" rx="2" fill="rgba(127,168,214,0.2)"/>
+            <circle cx="200" cy="98" r="7" fill="#ff6b35" opacity="0.8"/>
+            
+            <!-- Front LiDAR Puck -->
+            <rect x="280" y="125" width="16" height="18" rx="2" stroke="#ff6b35" fill="rgba(255,107,53,0.2)"/>
+            
+            <!-- Depth Camera Array -->
+            <rect x="290" y="145" width="8" height="6" fill="#38d996"/>
+
+            <!-- Left Front Leg Linkage -->
+            <path d="M 270 145 L 305 185 L 290 235 L 300 237"/>
+            <circle cx="270" cy="145" r="4" fill="#7fa8d6"/>
+            <circle cx="305" cy="185" r="3" fill="#ff6b35"/>
+
+            <!-- Left Rear Leg Linkage -->
+            <path d="M 130 145 L 95 185 L 110 235 L 100 237"/>
+            <circle cx="130" cy="145" r="4" fill="#7fa8d6"/>
+            <circle cx="95" cy="185" r="3" fill="#ff6b35"/>
+
+            <!-- Right Front Leg (Ghosted Interior) -->
+            <path d="M 255 140 L 280 175 L 265 220" stroke="#2a486c" stroke-dasharray="2 2"/>
+            <!-- Right Rear Leg (Ghosted Interior) -->
+            <path d="M 145 140 L 120 175 L 135 220" stroke="#2a486c" stroke-dasharray="2 2"/>
+          </g>
+
+          <!-- LiDAR Fan Cones & Rays -->
+          <g stroke="#ff6b35" stroke-dasharray="3 3" fill="none" opacity="0.75">
+            <path d="M 296 134 L 380 90"/>
+            <path d="M 296 134 L 380 180"/>
+            <path d="M 200 91 L 120 35"/>
+            <path d="M 200 91 L 280 35"/>
+            <circle cx="200" cy="91" r="50" stroke-dasharray="1 4" opacity="0.4"/>
+          </g>
+
+          <!-- Telemetry Annotations -->
+          <text x="25" y="30" font-family="IBM Plex Mono" font-size="8.5" fill="#ff6b35">SYS_ID: QUAD-SLAM-01</text>
+          <text x="25" y="42" font-family="IBM Plex Mono" font-size="7.5" fill="#7fa8d6">HOST: RASPBERRY PI 5 (8GB)</text>
+          <text x="25" y="54" font-family="IBM Plex Mono" font-size="7.5" fill="#7fa8d6">PIPE: ROS2 NAV2 / SLAM_TOOLBOX</text>
+          
+          <!-- Dimension Tick Callouts -->
+          <g stroke="#7fa8d6" stroke-width="0.75">
+            <line x1="105" y1="255" x2="300" y2="255"/>
+            <line x1="105" y1="250" x2="105" y2="260"/>
+            <line x1="300" y1="250" x2="300" y2="260"/>
+            <text x="202" y="268" font-family="IBM Plex Mono" font-size="8" fill="#7fa8d6" text-anchor="middle">WHEELBASE / STANCE: 520 mm</text>
+          </g>
+        </svg>
+        <div class="schematic-caption">
+          <span>FIG 01.0 // SENSOR FUSION SCHEMATIC</span>
+          <span>STATUS: BENCH VALIDATED</span>
         </div>
-      </div>
-      <div class="hc-row">
-        <span class="hc-icon">📍</span>
-        <div class="hc-info">
-          <span class="hc-key">LOCATION</span>
-          <div class="hc-val">Delhi, India</div>
-        </div>
-      </div>
-      <div class="hc-row">
-        <span class="hc-icon">🎯</span>
-        <div class="hc-info">
-          <span class="hc-key">SEEKING</span>
-          <div class="hc-val">Robotics Engineer · Software Engineer<br>Deep-tech · High-growth startups</div>
-        </div>
-      </div>
-      <div class="hc-row">
-        <span class="hc-icon">💻</span>
-        <div class="hc-info">
-          <span class="hc-key">DSA PREP</span>
-          <div class="hc-val"><em>TCS NQT 2026</em> · Striver A2Z Sheet<br>200+ LeetCode solved</div>
-        </div>
-      </div>
-      <div class="badge-row">
-        <span class="badge hi">ROS2</span>
-        <span class="badge hi">SLAM</span>
-        <span class="badge hi">EKF</span>
-        <span class="badge gr">C++</span>
-        <span class="badge gr">Python</span>
-        <span class="badge or">ESP32</span>
-        <span class="badge or">micro-ROS</span>
-        <span class="badge">Nav2</span>
-        <span class="badge">Gazebo</span>
-        <span class="badge">MATLAB</span>
       </div>
     </div>
   </div>
@@ -352,173 +656,268 @@ footer{background:var(--ink);border-top:1px solid var(--edge2);padding:28px 60px
 
 <div class="divider"></div>
 
-<!-- ─── EXPERIENCE ─────────────────────────────────────────────────── -->
+<!-- ── EXPERIENCE BOM ───────────────────────────────────────────── -->
 <section id="experience">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Experience</div>
-      <h2 class="sec-title">Where I've <em>Deployed</em></h2>
+      <div>
+        <div class="sec-tag">Deployment History</div>
+        <h2 class="sec-title">Bill of Roles Held</h2>
+      </div>
+      <div class="sec-sheet">SHEET 02 // LOGS</div>
     </div>
-    <div class="exp-grid">
 
-      <!-- Flywheel -->
-      <div class="exp-card reveal">
-        <div class="exp-badge active">● CURRENT</div>
-        <div class="exp-date">MAY 2026 – PRESENT · DELHI, INDIA</div>
-        <div class="exp-title">Robotics Engineer Intern</div>
-        <div class="exp-org">Flywheel Aerospace</div>
-        <ul class="exp-bullets">
-          <li>Architected and deployed a full AMR navigation stack on <strong>ESP32 + ROS2 + micro-ROS</strong>; implemented obstacle avoidance, line-following, and wall-following using fused IMU, ToF, and encoder data — reduced navigation error ~20% vs. single-sensor baseline.</li>
-          <li>Designed and tuned <strong>PID-based motion control</strong> for precise trajectory execution across 4+ surface types; achieved &lt;5° heading deviation in continuous real-world testing.</li>
-          <li>Integrated sensor fusion pipeline combining odometry, IMU, and proximity sensing into a unified ROS2 state estimator, improving localisation reliability in narrow corridors.</li>
-        </ul>
-        <div class="exp-tags">
-          <span class="exp-tag">ESP32</span><span class="exp-tag">micro-ROS</span><span class="exp-tag">ROS2</span><span class="exp-tag">PID</span><span class="exp-tag">IMU</span><span class="exp-tag">ToF</span><span class="exp-tag">Ubuntu 22.04</span>
+    <div class="bom reveal">
+      <div class="bom-head">
+        <div>Item</div>
+        <div>Role &amp; Enterprise</div>
+        <div>Operational Term</div>
+        <div>State</div>
+      </div>
+
+      <div class="bom-row">
+        <div class="bom-meta">
+          <div class="bom-idx">01</div>
+          <div>
+            <div class="bom-role-title">SLAM Intern (Contract)</div>
+            <div class="bom-org">Navyug Infosolutions Pvt. Ltd. · Delhi</div>
+          </div>
+          <div class="bom-timeline">Jun 2026 – Present</div>
+          <div><span class="badge badge-active">● RUNNING</span></div>
+        </div>
+        <div class="bom-content">
+          <ul>
+            <li>Architecting real-time SLAM pose estimation for quadruped robotics over dynamic unstructured terrains.</li>
+            <li>Deploying ROS 2 Nav2, SLAM Toolbox, and sensor fusion engines onto onboard Raspberry Pi 5 embedded Linux.</li>
+            <li>Formulating LiDAR-IMU temporal synchronization filters under enterprise NDA specifications.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tpill">ROS2 Nav2</span><span class="tpill">SLAM Toolbox</span><span class="tpill">LiDAR Integration</span><span class="tpill">Raspberry Pi 5</span><span class="tpill">Embedded Linux</span>
+          </div>
         </div>
       </div>
 
-      <!-- IIT Mandi -->
-      <div class="exp-card reveal">
-        <div class="exp-badge past">PAST</div>
-        <div class="exp-date">JUN – AUG 2025 · MANDI, HIMACHAL PRADESH</div>
-        <div class="exp-title">Research Intern</div>
-        <div class="exp-org">Indian Institute of Technology (IIT) Mandi</div>
-        <ul class="exp-bullets">
-          <li>Built a full <strong>ROS2 Humble + Gazebo Ignition</strong> simulation pipeline for autonomous underwater robot navigation — cut hardware testing overhead ~35%, enabling rapid algorithm iteration.</li>
-          <li>Integrated IMU and depth sensors into ROS2; performed real-time noise characterisation and validated autonomous navigation in <strong>RViz</strong>.</li>
-          <li>Modelled a robotic brush mechanism in <strong>MATLAB/Simulink</strong> for motion-dynamics analysis, substantially de-risking physical prototype build.</li>
-        </ul>
-        <div class="exp-tags">
-          <span class="exp-tag">ROS2 Humble</span><span class="exp-tag">Gazebo Ignition</span><span class="exp-tag">MATLAB/Simulink</span><span class="exp-tag">IMU</span><span class="exp-tag">RViz</span>
+      <div class="bom-row">
+        <div class="bom-meta">
+          <div class="bom-idx">02</div>
+          <div>
+            <div class="bom-role-title">Robotics Engineer Intern</div>
+            <div class="bom-org">Flywheel Aerospace · Delhi</div>
+          </div>
+          <div class="bom-timeline">May 2026 – Jul 2026</div>
+          <div><span class="badge badge-past">COMPLETED</span></div>
+        </div>
+        <div class="bom-content">
+          <ul>
+            <li>Engineered firmware &amp; micro-ROS interface for "Luna" wheeled mobile robot running on ESP32 microcontrollers.</li>
+            <li>Formulated and deployed a real-time PID heading-lock controller maintaining $<2^\circ$ yaw drift during trajectory runs.</li>
+            <li>Resolved encoder jitter and debouncing via dedicated hardware timer interrupts and real-time serial telemetry.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tpill">ESP32</span><span class="tpill">micro-ROS</span><span class="tpill">PID Heading Control</span><span class="tpill">MPU-6050</span><span class="tpill">Time-of-Flight (ToF)</span>
+          </div>
         </div>
       </div>
 
-      <!-- IBM -->
-      <div class="exp-card reveal">
-        <div class="exp-badge past">PAST</div>
-        <div class="exp-date">JUN – AUG 2024 · REMOTE</div>
-        <div class="exp-title">Virtual Data Analytics Intern</div>
-        <div class="exp-org">IBM CSRBox</div>
-        <ul class="exp-bullets">
-          <li>Cleaned, validated, and preprocessed multi-source datasets using <strong>Python (Pandas, NumPy)</strong>; delivered analysis-ready pipelines for downstream business analytics reports consumed by 3 stakeholder teams.</li>
-        </ul>
-        <div class="exp-tags">
-          <span class="exp-tag">Python</span><span class="exp-tag">Pandas</span><span class="exp-tag">NumPy</span><span class="exp-tag">Data Analytics</span>
+      <div class="bom-row">
+        <div class="bom-meta">
+          <div class="bom-idx">03</div>
+          <div>
+            <div class="bom-role-title">Autonomous Marine Research Intern</div>
+            <div class="bom-org">IIT Mandi · Himachal Pradesh</div>
+          </div>
+          <div class="bom-timeline">Jun 2025 – Aug 2025</div>
+          <div><span class="badge badge-past">COMPLETED</span></div>
+        </div>
+        <div class="bom-content">
+          <ul>
+            <li>Designed a ROS 2 Humble + Gazebo Ignition hydrodynamic simulation for an autonomous underwater vehicle.</li>
+            <li>Extracted noise covariance matrices from simulated IMU/depth sensors to configure Extended Kalman Filters (EKF).</li>
+            <li>Simulated robotic hull-grooming kinematics and brush actuators using MATLAB/Simulink ahead of mechanical fabrication.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Ignition</span><span class="tpill">MATLAB / Simulink</span><span class="tpill">EKF Localization</span><span class="tpill">RViz</span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Education card -->
-      <div class="exp-card reveal" style="background:linear-gradient(135deg,var(--card),var(--card2));border-color:rgba(56,189,248,.2);">
-        <div class="exp-badge" style="color:var(--hi);border:1px solid rgba(56,189,248,.3);background:rgba(56,189,248,.06);">EDUCATION</div>
-        <div class="exp-date">2023 – 2027</div>
-        <div class="exp-title" style="font-size:18px;">B.Tech — Automation & Robotics</div>
-        <div class="exp-org">GGSIPU Delhi, USAR</div>
-        <ul class="exp-bullets" style="margin-top:8px;">
-          <li>CGPA: <strong style="color:var(--hi)">8.50 / 10</strong> — consistently strong academic performance</li>
-          <li>Focus on autonomous systems, embedded control, sensor fusion, and robotic simulation</li>
-          <li>Finalist in national hardware hackathons; Top 50 at Bharat Auto Expo 2025</li>
-        </ul>
-        <div style="margin-top:20px;font-family:var(--ff-mono);font-size:11px;color:var(--green);display:flex;align-items:center;gap:8px;">
-          <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pls 2s infinite;"></span>
-          6th Semester · Graduating 2027
-        </div>
+    <div class="edu-card reveal">
+      <div class="edu-left">
+        <b>B.Tech in Automation &amp; Robotics — USAR, GGSIPU Delhi</b>
+        <p>2023 – 2027 · Specialization in Autonomous Navigation, Embedded Systems &amp; Robotics Kinematics</p>
       </div>
-
+      <div class="edu-cgpa">
+        <div class="val">8.50</div>
+        <div class="lbl">Cumulative GPA / 10.0</div>
+      </div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ─── PROJECTS ────────────────────────────────────────────────────── -->
+<!-- ── PROJECTS / SUBSYSTEMS ────────────────────────────────────── -->
 <section id="projects">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Projects</div>
-      <h2 class="sec-title">Robots I've <em>Built</em></h2>
+      <div>
+        <div class="sec-tag">Physical &amp; Virtual Builds</div>
+        <h2 class="sec-title">Engineered Subsystems</h2>
+      </div>
+      <div class="sec-sheet">SHEET 03 // DEPLOYMENTS</div>
     </div>
-    <div class="proj-grid">
 
-      <!-- Featured: AUV -->
-      <div class="proj-card featured reveal">
-        <div class="proj-thumb">
-          <span class="proj-thumb-icon">🤿</span>
-          <span class="proj-num-badge">PROJECT_01 · FEATURED</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">Autonomous Underwater Vehicle — Naval Mine Surveillance</div>
-          <p class="proj-desc">4-thruster torpedo-style AUV with 50 Hz IMU, 4-beam DVL, pressure depth sensor, and 120° FOV sonar (30 m range). Implemented EKF-based sensor fusion + SLAM Toolbox for precise underwater localisation. Achieved 95%+ mine detection recall. Full mission autonomy (dive → survey → surface) validated in Gazebo with real-time mission logging and automated CSV/Excel reports. Team of 2.</p>
-          <div class="proj-tags">
-            <span class="ptag">ROS2 Humble</span><span class="ptag">Gazebo Classic</span><span class="ptag">EKF Sensor Fusion</span><span class="ptag">SLAM Toolbox</span><span class="ptag">C++</span><span class="ptag">Python</span>
+    <div class="projects-grid">
+
+      <!-- PROJECT 1: AUV Naval Mine Hunter -->
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <div class="visual-canvas">
+            <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#7fa8d6" stroke-width="1.2" fill="none">
+                <!-- Torpedo Hull -->
+                <path d="M 40 100 Q 60 70 120 70 L 240 70 Q 280 70 290 100 Q 280 130 240 130 L 120 130 Q 60 130 40 100 Z" fill="rgba(19,56,99,0.3)"/>
+                <!-- Thruster Shrouds -->
+                <rect x="25" y="80" width="15" height="15" rx="1" fill="#ff6b35" opacity="0.8"/>
+                <rect x="25" y="105" width="15" height="15" rx="1" fill="#ff6b35" opacity="0.8"/>
+                <line x1="40" y1="87" x2="55" y2="87"/>
+                <line x1="40" y1="112" x2="55" y2="112"/>
+                <!-- Sonar Dome -->
+                <path d="M 280 85 A 20 20 0 0 1 280 115" stroke="#38d996" stroke-width="2"/>
+                <!-- Sonar Beams -->
+                <path d="M 285 100 L 315 70" stroke="#38d996" stroke-dasharray="2 3"/>
+                <path d="M 285 100 L 320 100" stroke="#38d996" stroke-dasharray="2 3"/>
+                <path d="M 285 100 L 315 130" stroke="#38d996" stroke-dasharray="2 3"/>
+                <!-- Internal Component Blocks -->
+                <rect x="90" y="82" width="35" height="36" stroke-dasharray="2 2" stroke="#2a486c"/>
+                <text x="107" y="103" font-family="IBM Plex Mono" font-size="7" fill="#7fa8d6" text-anchor="middle">IMU/DVL</text>
+                <rect x="140" y="82" width="45" height="36" stroke-dasharray="2 2" stroke="#2a486c"/>
+                <text x="162" y="103" font-family="IBM Plex Mono" font-size="7" fill="#7fa8d6" text-anchor="middle">ROS2 CORE</text>
+                <rect x="200" y="82" width="35" height="36" stroke-dasharray="2 2" stroke="#2a486c"/>
+                <text x="217" y="103" font-family="IBM Plex Mono" font-size="7" fill="#7fa8d6" text-anchor="middle">BATTERY</text>
+              </g>
+              <text x="15" y="25" font-family="IBM Plex Mono" font-size="8" fill="#7fa8d6">FIG 03.1 // AUV SUB-SURFACE SCHEMATIC</text>
+            </svg>
           </div>
-          <div style="display:flex;gap:16px;flex-wrap:wrap;">
-            <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="proj-link">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-            <a href="#" class="proj-link">Demo Video <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+          <div class="metric-strip">
+            <div class="m-cell"><small>Target Accuracy</small><b>0.99 Confidence</b></div>
+            <div class="m-cell"><small>Sensor Sampling</small><b>50 Hz IMU / DVL</b></div>
+          </div>
+        </div>
+        <div class="project-details">
+          <div class="p-header">
+            <span class="p-title">Autonomous Underwater Vehicle — Naval Mine Detection</span>
+            <span class="p-date">Mar – May 2026</span>
+          </div>
+          <p class="p-desc">
+            Engineered a 4-thruster torpedo AUV in Gazebo Classic featuring 4-beam Doppler Velocity Log (DVL), 50 Hz IMU, pressure depth transceivers, and forward sonar arrays ($120^\circ$ FOV). Mitigated EKF NaN propagation and QoS transport mismatches during waypoint execution. Successfully located and registered all 6 simulated underwater targets with automated telemetry reporting.
+          </p>
+          <div class="tech-pills" style="margin-bottom:18px;">
+            <span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Classic</span><span class="tpill">EKF Fusion</span><span class="tpill">SLAM Toolbox</span><span class="tpill">C++ / Python</span>
+          </div>
+          <div class="p-actions">
+            <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="p-link">Inspect Source Repositories ↗</a>
           </div>
         </div>
       </div>
 
-      <!-- AMR / Flywheel -->
-      <div class="proj-card reveal">
-        <div class="proj-thumb">
-          <span class="proj-thumb-icon">🤖</span>
-          <span class="proj-num-badge">PROJECT_02</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">Luna AMR — ESP32 + micro-ROS Navigation Stack</div>
-          <p class="proj-desc">Real-hardware AMR (Flywheel Aerospace) with obstacle avoidance, line-following, wall-following. PID motion control achieving &lt;5° heading deviation. Sensor fusion of IMU, ToF, and encoders via ROS2 state estimator.</p>
-          <div class="proj-tags">
-            <span class="ptag">ESP32</span><span class="ptag">micro-ROS</span><span class="ptag">ROS2</span><span class="ptag">PID</span><span class="ptag">Sensor Fusion</span>
+      <!-- PROJECT 2: Luna Mobile Robot -->
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <div class="visual-canvas">
+            <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Block Diagram micro-ROS -->
+              <g stroke="#7fa8d6" stroke-width="1.2" fill="none">
+                <rect x="30" y="70" width="80" height="60" rx="3" fill="rgba(19,56,99,0.4)"/>
+                <text x="70" y="95" font-family="IBM Plex Mono" font-size="8" fill="#fff" text-anchor="middle">ESP32</text>
+                <text x="70" y="110" font-family="IBM Plex Mono" font-size="7" fill="#ff6b35" text-anchor="middle">micro-ROS</text>
+
+                <!-- Arrows -->
+                <line x1="110" y1="100" x2="160" y2="100" stroke="#ff6b35" stroke-width="1.5"/>
+                <polygon points="160,97 167,100 160,103" fill="#ff6b35"/>
+
+                <rect x="170" y="40" width="120" height="120" rx="3" fill="rgba(11,36,68,0.7)"/>
+                <text x="230" y="65" font-family="IBM Plex Mono" font-size="8.5" fill="#38d996" text-anchor="middle">ROS 2 WORKSPACE</text>
+                
+                <rect x="185" y="80" width="90" height="24" stroke="#2a486c"/>
+                <text x="230" y="96" font-family="IBM Plex Mono" font-size="7" fill="#7fa8d6" text-anchor="middle">/cmd_vel (Twist)</text>
+                <rect x="185" y="115" width="90" height="24" stroke="#2a486c"/>
+                <text x="230" y="131" font-family="IBM Plex Mono" font-size="7" fill="#7fa8d6" text-anchor="middle">/imu/data_raw</text>
+
+                <!-- Peripheral Nodes -->
+                <circle cx="70" cy="35" r="12" stroke="#38d996"/>
+                <text x="70" y="38" font-family="IBM Plex Mono" font-size="6.5" fill="#38d996" text-anchor="middle">PID</text>
+                <line x1="70" y1="47" x2="70" y2="70"/>
+              </g>
+              <text x="15" y="25" font-family="IBM Plex Mono" font-size="8" fill="#7fa8d6">FIG 03.2 // HARDWARE INTERRUPT &amp; CONTROL TOPOLOGY</text>
+            </svg>
           </div>
-          <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="proj-link">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+          <div class="metric-strip">
+            <div class="m-cell"><small>Yaw Precision</small><b>&lt; 2.0° Error</b></div>
+            <div class="m-cell"><small>Compute Bridge</small><b>Serial micro-ROS</b></div>
+          </div>
+        </div>
+        <div class="project-details">
+          <div class="p-header">
+            <span class="p-title">Luna — Micro-ROS Embedded Mobile Robot</span>
+            <span class="p-date">Flywheel Aerospace · 2026</span>
+          </div>
+          <p class="p-desc">
+            Constructed a custom differential drive platform equipped with dynamic PID heading stabilization. Overcame severe wheel slippage and interrupt queue blocking by developing non-blocking sensor acquisition loops. Fabricated telemetry logger in Python to dynamically calibrate PID gains via live ROS 2 parameter tuners.
+          </p>
+          <div class="tech-pills" style="margin-bottom:18px;">
+            <span class="tpill">ESP32</span><span class="tpill">micro-ROS Client</span><span class="tpill">PID Heading Lock</span><span class="tpill">MPU-6050 Filtering</span>
+          </div>
+          <div class="p-actions">
+            <span class="p-link" style="color:var(--line-dim);">Bench Hardware Verified ●</span>
+          </div>
         </div>
       </div>
 
-      <!-- LiDAR SLAM -->
-      <div class="proj-card reveal">
-        <div class="proj-thumb">
-          <span class="proj-thumb-icon">🗺️</span>
-          <span class="proj-num-badge">PROJECT_03</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">4-Wheel Diff-Drive Robot with LiDAR SLAM</div>
-          <p class="proj-desc">URDF/Xacro robot with 360° LiDAR (8 m, 30 Hz) in Gazebo. SLAM Toolbox for live occupancy-grid mapping in a 4-room arena. Python ROS2 node for DANGER/CAUTION/SAFE zone classification + Excel analytics (6 algorithms: Z-score, gradient edge, moving average, normalization, threshold filter, danger-zone detection).</p>
-          <div class="proj-tags">
-            <span class="ptag">ROS2 Humble</span><span class="ptag">Gazebo Classic</span><span class="ptag">SLAM Toolbox</span><span class="ptag">OpenPyXL</span><span class="ptag">Python</span>
-          </div>
-          <a href="https://github.com/luckybisht21/diff_robott_ws" target="_blank" rel="noopener" class="proj-link">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-        </div>
-      </div>
+      <!-- PROJECT 3: 4-Wheel Differential Drive SLAM -->
+      <div class="project-card reveal">
+        <div class="project-visual">
+          <div class="visual-canvas">
+            <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#7fa8d6" stroke-width="1.2" fill="none">
+                <!-- Differential Chassis Top View -->
+                <rect x="90" y="55" width="140" height="90" rx="4" fill="rgba(19,56,99,0.4)"/>
+                
+                <!-- 4 Wheels -->
+                <rect x="70" y="45" width="30" height="20" rx="2" fill="#2a486c"/>
+                <rect x="220" y="45" width="30" height="20" rx="2" fill="#2a486c"/>
+                <rect x="70" y="135" width="30" height="20" rx="2" fill="#2a486c"/>
+                <rect x="220" y="135" width="30" height="20" rx="2" fill="#2a486c"/>
 
-      <!-- Multi-Sensor -->
-      <div class="proj-card reveal">
-        <div class="proj-thumb">
-          <span class="proj-thumb-icon">📡</span>
-          <span class="proj-num-badge">PROJECT_04</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">Multi-Sensor Robot — IMU · GPS · Camera Fusion</div>
-          <p class="proj-desc">Fused three async sensor streams (IMU 50 Hz, GPS 1 Hz, Camera 30 Hz) in a single ROS2 Humble stack. Live 0.5s-refresh terminal dashboard + timestamped CSV logger. Validated with real laptop webcam via v4l2_camera driver — bridging sim-to-real gap.</p>
-          <div class="proj-tags">
-            <span class="ptag">ROS2</span><span class="ptag">Gazebo Ignition</span><span class="ptag">IMU</span><span class="ptag">GPS</span><span class="ptag">v4l2_camera</span><span class="ptag">Python</span>
+                <!-- 360 LiDAR Sweep -->
+                <circle cx="160" cy="100" r="14" fill="#ff6b35" opacity="0.3" stroke="#ff6b35"/>
+                <circle cx="160" cy="100" r="40" stroke="#ff6b35" stroke-dasharray="3 3"/>
+                <circle cx="160" cy="100" r="65" stroke="#ff6b35" stroke-dasharray="1 5" opacity="0.6"/>
+                <line x1="160" y1="100" x2="210" y2="60" stroke="#ff6b35"/>
+              </g>
+              <text x="15" y="25" font-family="IBM Plex Mono" font-size="8" fill="#7fa8d6">FIG 03.3 // OCCUPANCY GRID &amp; SCAN SWEEP</text>
+            </svg>
           </div>
-          <a href="https://github.com/luckybisht21/ros2-robot-simulation" target="_blank" rel="noopener" class="proj-link">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-        </div>
-      </div>
-
-      <!-- Pick-and-Place -->
-      <div class="proj-card reveal">
-        <div class="proj-thumb">
-          <span class="proj-thumb-icon">⚙️</span>
-          <span class="proj-num-badge">PROJECT_05</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">Autonomous Pick-and-Place Robotic Arm</div>
-          <p class="proj-desc">Sensor-driven robotic arm with IR/UV sensing and servo actuation. Implemented motion control logic and calibration for consistent positional accuracy across repeated operational cycles.</p>
-          <div class="proj-tags">
-            <span class="ptag">Arduino</span><span class="ptag">IR/UV Sensors</span><span class="ptag">Servo Motors</span><span class="ptag">C++</span>
+          <div class="metric-strip">
+            <div class="m-cell"><small>Laser Rate</small><b>30 Hz / 8m Range</b></div>
+            <div class="m-cell"><small>Algorithms</small><b>6 Zone Filters</b></div>
           </div>
-          <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="proj-link">GitHub <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+        <div class="project-details">
+          <div class="p-header">
+            <span class="p-title">4-Wheel Differential Drive Robot with LiDAR SLAM</span>
+            <span class="p-date">Jan – Feb 2026</span>
+          </div>
+          <p class="p-desc">
+            Constructed modular URDF/Xacro kinematics models with 360° RPLiDAR emulation. Integrated SLAM Toolbox for robust 2D occupancy mapping within complex multibody simulated spaces. Integrated automated zone safety metrics using rolling Z-scores and edge gradients exported continuously via OpenPyXL pipelines.
+          </p>
+          <div class="tech-pills" style="margin-bottom:18px;">
+            <span class="tpill">ROS2 Humble</span><span class="tpill">URDF / Xacro</span><span class="tpill">SLAM Toolbox</span><span class="tpill">Gazebo World</span><span class="tpill">Python</span>
+          </div>
+          <div class="p-actions">
+            <a href="https://github.com/luckybisht21/diff_robott_ws" target="_blank" rel="noopener" class="p-link">Open Workspace Repository ↗</a>
+          </div>
         </div>
       </div>
 
@@ -528,48 +927,84 @@ footer{background:var(--ink);border-top:1px solid var(--edge2);padding:28px 60px
 
 <div class="divider"></div>
 
-<!-- ─── SKILLS ─────────────────────────────────────────────────────── -->
+<!-- ── TECHNICAL MATRIX ─────────────────────────────────────────── -->
 <section id="skills">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Tech Stack</div>
-      <h2 class="sec-title">Tools of the <em>Trade</em></h2>
+      <div>
+        <div class="sec-tag">Skill Specifications</div>
+        <h2 class="sec-title">Subsystem Parts Catalog</h2>
+      </div>
+      <div class="sec-sheet">SHEET 04 // MATRIX</div>
     </div>
-    <div class="skills-layout">
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">🤖</div><div class="sp-label">Robotics Stack</div></div>
-        <div class="sp-pills">
-          <span class="pill hi">ROS2 Humble</span><span class="pill hi">Gazebo Classic</span><span class="pill hi">Gazebo Ignition</span><span class="pill hi">Nav2</span><span class="pill hi">SLAM Toolbox</span><span class="pill">RViz2</span><span class="pill">tf2</span><span class="pill">URDF / Xacro</span><span class="pill">micro-ROS</span><span class="pill">MATLAB / Simulink</span><span class="pill">v4l2_camera</span>
+
+    <div class="matrix-grid reveal">
+      <div class="matrix-panel">
+        <div class="m-panel-head">Core Languages <span>[CAT-01]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">C++ (Modern/17)</span>
+          <span class="matrix-tag">Python (OOP, NumPy)</span>
+          <span class="matrix-tag">MATLAB</span>
+          <span class="matrix-tag">C (Bare-Metal)</span>
         </div>
       </div>
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">📟</div><div class="sp-label">Hardware & Sensors</div></div>
-        <div class="sp-pills">
-          <span class="pill or">ESP32</span><span class="pill or">Arduino</span><span class="pill">LiDAR 360°</span><span class="pill">IMU (MPU-6050)</span><span class="pill">ToF (VL53L0X)</span><span class="pill">DVL</span><span class="pill">GPS</span><span class="pill">Depth Sensor</span><span class="pill">Encoders</span><span class="pill">IR / UV</span><span class="pill">Servo Motors</span><span class="pill">Webcam (v4l2)</span>
+
+      <div class="matrix-panel">
+        <div class="m-panel-head">Robotics &amp; Middleware <span>[CAT-02]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">ROS 2 (Humble/Foxy)</span>
+          <span class="matrix-tag">Nav2 Planning</span>
+          <span class="matrix-tag">SLAM Toolbox</span>
+          <span class="matrix-tag">micro-ROS</span>
+          <span class="matrix-tag">URDF / Xacro</span>
+          <span class="matrix-tag">TF2 Transforms</span>
+          <span class="matrix-tag">Gazebo Classic &amp; Ignition</span>
+          <span class="matrix-tag">RViz2</span>
         </div>
       </div>
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">💻</div><div class="sp-label">Programming</div></div>
-        <div class="sp-pills">
-          <span class="pill gr">C++</span><span class="pill gr">Python</span><span class="pill gr">C</span><span class="pill">MATLAB</span><span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Matplotlib</span><span class="pill">OpenPyXL</span>
+
+      <div class="matrix-panel">
+        <div class="m-panel-head">State Estimation &amp; Control <span>[CAT-03]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">Extended Kalman Filters (EKF)</span>
+          <span class="matrix-tag">Sensor Fusion</span>
+          <span class="matrix-tag">PID Tuning</span>
+          <span class="matrix-tag">Occupancy Grid SLAM</span>
+          <span class="matrix-tag">Kinematic Odometry</span>
         </div>
       </div>
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">📊</div><div class="sp-label">DSA & CS Concepts</div></div>
-        <div class="sp-pills">
-          <span class="pill hi">200+ LeetCode</span><span class="pill hi">Binary Trees</span><span class="pill hi">Graphs</span><span class="pill hi">Dynamic Programming</span><span class="pill">Arrays & Strings</span><span class="pill">Linked Lists</span><span class="pill">Stacks & Queues</span><span class="pill">Recursion</span><span class="pill">Striver A2Z</span>
+
+      <div class="matrix-panel">
+        <div class="m-panel-head">Embedded Compute <span>[CAT-04]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">Raspberry Pi 5 / 4</span>
+          <span class="matrix-tag">ESP32 NodeMCU</span>
+          <span class="matrix-tag">Embedded Linux</span>
+          <span class="matrix-tag">UART / I2C / SPI</span>
+          <span class="matrix-tag">Timers &amp; Interrupts</span>
         </div>
       </div>
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">🧠</div><div class="sp-label">Robotics Concepts</div></div>
-        <div class="sp-pills">
-          <span class="pill">EKF Sensor Fusion</span><span class="pill">PID Control</span><span class="pill">Autonomous Navigation</span><span class="pill">Occupancy Grid Mapping</span><span class="pill">Waypoint Navigation</span><span class="pill">Differential Drive</span><span class="pill">Sim-to-Real Transfer</span>
+
+      <div class="matrix-panel">
+        <div class="m-panel-head">Sensor Transceivers <span>[CAT-05]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">2D/3D LiDAR Puck</span>
+          <span class="matrix-tag">MPU-6050 / 9250 IMU</span>
+          <span class="matrix-tag">Time-of-Flight (VL53L0X)</span>
+          <span class="matrix-tag">Rotary Encoders</span>
+          <span class="matrix-tag">Doppler Velocity Log</span>
+          <span class="matrix-tag">Depth Pressure Probes</span>
         </div>
       </div>
-      <div class="skill-panel reveal">
-        <div class="sp-head"><div class="sp-icon">🛠</div><div class="sp-label">Tools & Infra</div></div>
-        <div class="sp-pills">
-          <span class="pill">Git</span><span class="pill">Linux Ubuntu 22.04</span><span class="pill">Docker (basics)</span><span class="pill">Kubernetes (GCP)</span><span class="pill">IoT</span><span class="pill">Samsung AI Campus</span><span class="pill">Cisco IoT</span>
+
+      <div class="matrix-panel">
+        <div class="m-panel-head">Data Structures (DSA) <span>[CAT-06]</span></div>
+        <div class="tag-collection">
+          <span class="matrix-tag">200+ Solved</span>
+          <span class="matrix-tag">Graph Algorithms</span>
+          <span class="matrix-tag">Trees &amp; Heaps</span>
+          <span class="matrix-tag">Dynamic Programming</span>
+          <span class="matrix-tag">Striver A2Z System</span>
         </div>
       </div>
     </div>
@@ -578,45 +1013,59 @@ footer{background:var(--ink);border-top:1px solid var(--edge2);padding:28px 60px
 
 <div class="divider"></div>
 
-<!-- ─── ACHIEVEMENTS ─────────────────────────────────────────────────── -->
+<!-- ── ACHIEVEMENTS & INSPECTIONS ───────────────────────────────── -->
 <section id="achievements">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Achievements</div>
-      <h2 class="sec-title">Wins & <em>Recognition</em></h2>
+      <div>
+        <div class="sec-tag">Validation Records</div>
+        <h2 class="sec-title">Quality Stamps &amp; Honors</h2>
+      </div>
+      <div class="sec-sheet">SHEET 05 // VERIFICATION</div>
     </div>
-    <div class="ach-grid reveal">
-      <div class="ach-card">
-        <span class="ach-icon">🏆</span>
-        <div class="ach-title">Finalist — NIMESHA Hackathon 2025</div>
-        <p class="ach-desc">24-hour prototyping competition at Karuyantra Robotics Club, Delhi. Competed against top engineering teams nationally.</p>
+
+    <div class="stamp-grid reveal">
+      <div class="stamp">
+        <div class="st-badge">FINALIST</div>
+        <div class="st-title">NIMESHA Hardware Hackathon 2025</div>
+        <div class="st-desc">24-Hour Autonomous Robot Fabrication · Karuyantra Club</div>
       </div>
-      <div class="ach-card">
-        <span class="ach-icon">🥇</span>
-        <div class="ach-title">Top 50 — Bharat Auto Expo 2025</div>
-        <p class="ach-desc">Road & Traffic Safety Innovation category. Competed among hundreds of student innovators across India.</p>
+
+      <div class="stamp">
+        <div class="st-badge">TOP 50</div>
+        <div class="st-title">Bharat Auto Expo 2025</div>
+        <div class="st-desc">National Road &amp; Sensor Safety Innovation Showcase</div>
       </div>
-      <div class="ach-card">
-        <span class="ach-icon">🥈</span>
-        <div class="ach-title">2nd Place — Shark Tank 2024</div>
-        <p class="ach-desc">College Edition. Pitched a tech venture to a panel of industry judges and investors. Stood out from 50+ teams.</p>
+
+      <div class="stamp">
+        <div class="st-badge">2ND PLACE</div>
+        <div class="st-title">Shark Tank — College Edition</div>
+        <div class="st-desc">Autonomous Robotics Product Commercialization Pitch</div>
       </div>
-      <div class="ach-card">
-        <span class="ach-icon">🎯</span>
-        <div class="ach-title">Finalist — IPU Innovation 2024</div>
-        <p class="ach-desc">Maritime Security Research track. Selected as a top finalist across all IPU colleges.</p>
+
+      <div class="stamp">
+        <div class="st-badge">FINALIST</div>
+        <div class="st-title">IPU Innovation 2024</div>
+        <div class="st-desc">Maritime Autonomous Defense Research Domain</div>
       </div>
     </div>
 
-    <div style="margin-top:52px;" class="reveal">
-      <div class="sec-tag" style="margin-bottom:20px;">Certifications</div>
-      <div class="cert-grid">
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">Samsung Innovation Campus — AI<small>2025–26</small></div></div>
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">Introduction to IoT — Cisco<small>Sep 2025</small></div></div>
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">Deploy Kubernetes on Google Cloud<small>May 2025</small></div></div>
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">Data Fundamentals — IBM SkillsBuild<small>Jul 2024</small></div></div>
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">Project Management Fundamentals — IBM<small>Jul 2024</small></div></div>
-        <div class="cert-item"><span class="cert-dot"></span><div class="cert-name">MATLAB Onramp — MathWorks<small>Verified</small></div></div>
+    <div class="cert-table reveal" style="margin-top:40px;">
+      <div class="cert-row">
+        <span>Samsung Innovation Campus — Artificial Intelligence Certified</span>
+        <span>2025–2026</span>
+      </div>
+      <div class="cert-row">
+        <span>Cisco Systems — Introduction to Internet of Things (IoT)</span>
+        <span>2025</span>
+      </div>
+      <div class="cert-row">
+        <span>Google Cloud — Deploying Kubernetes on GCP Architecture</span>
+        <span>2025</span>
+      </div>
+      <div class="cert-row">
+        <span>MathWorks — MATLAB Onramp Kinematics &amp; Systems</span>
+        <span>Verified</span>
       </div>
     </div>
   </div>
@@ -624,150 +1073,84 @@ footer{background:var(--ink);border-top:1px solid var(--edge2);padding:28px 60px
 
 <div class="divider"></div>
 
-<!-- ─── CONTACT ─────────────────────────────────────────────────────── -->
+<!-- ── CONTACT TERMINAL ─────────────────────────────────────────── -->
 <section id="contact">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Contact</div>
-      <h2 class="sec-title">Let's Build Something <em>Together</em></h2>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-left reveal">
-        <h3>Open to Robotics & Software Roles</h3>
-        <p>I'm actively looking for full-time Robotics Engineer and Software Engineer roles at deep-tech companies and high-growth startups. If you're working on autonomous systems, embedded robotics, or anything with ROS2 — I'd love to talk.</p>
-        <a href="mailto:luckybisht0094@gmail.com" class="btn btn-fill" style="margin-bottom:28px;">↗ Send Email</a>
-        <div class="share-box">
-          <div class="share-box-label">// Share This Portfolio</div>
-          <div class="share-row">
-            <div class="share-url">https://luckybisht21.github.io/portfolio</div>
-            <button class="share-copy" onclick="copyPortfolio(this)">COPY</button>
-          </div>
-          <div style="font-family:var(--ff-mono);font-size:9px;color:var(--text3);margin-top:10px;letter-spacing:1px;">↑ Drop this in your resume, LinkedIn, or emails.</div>
-        </div>
+      <div>
+        <div class="sec-tag">Establish Link</div>
+        <h2 class="sec-title">Communication Bus</h2>
       </div>
-      <div class="contact-links reveal">
-        <a href="mailto:luckybisht0094@gmail.com" class="clink">
-          <span class="clink-icon">✉</span>
-          <span class="clink-text">luckybisht0094@gmail.com</span>
-          <button class="copy-btn" onclick="cptext(event,'luckybisht0094@gmail.com',this)">COPY</button>
+      <div class="sec-sheet">SHEET 06 // TERMINAL</div>
+    </div>
+
+    <div class="contact-layout reveal">
+      <div class="contact-box">
+        <h3>Available for Robotics &amp; Autonomy Roles</h3>
+        <p>
+          Targeting Full-Time Robotics Software Engineer, SLAM/Perception, or Embedded Systems positions starting December 2026. Ready to deploy autonomous navigation and sensor pipelines to physical hardware.
+        </p>
+        <a href="mailto:luckybisht0094@gmail.com" class="btn btn-fill">Initiate Transmission →</a>
+      </div>
+
+      <div class="terminal-channels">
+        <div class="channel-row">
+          <span class="c-sym">✉</span>
+          <span>luckybisht0094@gmail.com</span>
+          <button class="c-copy" onclick="copyValue(event,'luckybisht0094@gmail.com',this)">COPY</button>
+        </div>
+        <div class="channel-row">
+          <span class="c-sym">☎</span>
+          <span>+91 82873 56673</span>
+          <button class="c-copy" onclick="copyValue(event,'+918287356673',this)">COPY</button>
+        </div>
+        <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="channel-row">
+          <span class="c-sym">⌥</span>
+          <span>github.com/luckybisht21</span>
         </a>
-        <a href="tel:+918287356673" class="clink">
-          <span class="clink-icon">📞</span>
-          <span class="clink-text">+91 82873 56673</span>
-          <button class="copy-btn" onclick="cptext(event,'+918287356673',this)">COPY</button>
+        <a href="https://www.linkedin.com/in/lucky-bisht-b176b2291/" target="_blank" rel="noopener" class="channel-row">
+          <span class="c-sym">◈</span>
+          <span>linkedin.com/in/lucky-bisht</span>
         </a>
-        <a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="clink">
-          <span class="clink-icon">⌥</span>
-          <span class="clink-text">github.com/luckybisht21</span>
-        </a>
-        <a href="https://www.linkedin.com/in/lucky-bisht-b176b2291/" target="_blank" rel="noopener" class="clink">
-          <span class="clink-icon">◈</span>
-          <span class="clink-text">linkedin.com/in/lucky-bisht</span>
-        </a>
-        <a href="https://leetcode.com/u/lucky0094/" target="_blank" rel="noopener" class="clink">
-          <span class="clink-icon">◉</span>
-          <span class="clink-text">leetcode.com/u/lucky0094 · 200+ solved</span>
-        </a>
-        <a href="https://luckybisht21.github.io/portfolio" target="_blank" rel="noopener" class="clink" style="border-color:rgba(74,222,128,.3);color:var(--green);">
-          <span class="clink-icon">🔗</span>
-          <span class="clink-text">luckybisht21.github.io/portfolio</span>
-          <button class="copy-btn" onclick="cptext(event,'https://luckybisht21.github.io/portfolio',this)" style="color:var(--green);border-color:rgba(74,222,128,.3);">COPY</button>
+        <a href="https://leetcode.com/u/lucky0094/" target="_blank" rel="noopener" class="channel-row">
+          <span class="c-sym">◉</span>
+          <span>leetcode.com/u/lucky0094 · 200+ Solved</span>
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ──────────────────────────────────────────────────────── -->
 <footer>
-  <div class="footer-t">© 2026 <span>LUCKY BISHT</span> · DELHI, INDIA</div>
-  <div class="footer-t"><a href="https://luckybisht21.github.io/portfolio" target="_blank">luckybisht21.github.io/portfolio</a></div>
-  <div class="footer-t">B.TECH AUTOMATION & ROBOTICS · <span>GGSIPU 2027</span></div>
+  <div class="wrap foot-content">
+    <span>LUCKY BISHT · NEW DELHI, INDIA</span>
+    <span>B.TECH AUTOMATION &amp; ROBOTICS (GGSIPU 2023–2027)</span>
+    <span>RELEASE CONFIG: PRODUCTION 2026.3</span>
+  </div>
 </footer>
 
-<!-- ─── SCRIPTS ─────────────────────────────────────────────────────── -->
 <script>
-/* ── cursor ── */
-const dot=document.getElementById('dot'),ring=document.getElementById('ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
-document.querySelectorAll('a,button,.proj-card,.ach-card,.skill-panel,.exp-card,.pill').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
-});
-
-/* ── canvas particles ── */
-const canvas=document.getElementById('bg-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,nodes=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-resize();window.addEventListener('resize',resize);
-
-function makeNode(){
-  return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5};
-}
-for(let i=0;i<80;i++)nodes.push(makeNode());
-
-function drawCanvas(){
-  ctx.clearRect(0,0,W,H);
-  // lines
-  for(let i=0;i<nodes.length;i++){
-    for(let j=i+1;j<nodes.length;j++){
-      const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
-      if(d<130){
-        ctx.beginPath();
-        ctx.strokeStyle=`rgba(56,189,248,${(1-d/130)*.18})`;
-        ctx.lineWidth=.5;
-        ctx.moveTo(nodes[i].x,nodes[i].y);
-        ctx.lineTo(nodes[j].x,nodes[j].y);
-        ctx.stroke();
-      }
+// Scroll reveal observer
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'), i * 60);
     }
-  }
-  // dots
-  nodes.forEach(n=>{
-    ctx.beginPath();
-    ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(56,189,248,.55)';
-    ctx.fill();
-    n.x+=n.vx;n.y+=n.vy;
-    if(n.x<0||n.x>W)n.vx*=-1;
-    if(n.y<0||n.y>H)n.vy*=-1;
   });
-  requestAnimationFrame(drawCanvas);
-}
-drawCanvas();
-
-/* ── reveal on scroll ── */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*70);});
-},{threshold:.1});
+},{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-/* ── nav active ── */
-window.addEventListener('scroll',()=>{
-  let cur='';
-  document.querySelectorAll('section[id]').forEach(s=>{
-    if(window.scrollY>=s.offsetTop-130)cur=s.id;
-  });
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
-  });
-});
-
-/* ── copy helpers ── */
-function copyPortfolio(btn){
-  navigator.clipboard.writeText('https://luckybisht21.github.io/portfolio').then(()=>{
-    const o=btn.textContent;btn.textContent='COPIED!';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},2000);
-  });
-}
-function cptext(e,txt,btn){
-  e.preventDefault();e.stopPropagation();
-  navigator.clipboard.writeText(txt).then(()=>{
-    btn.textContent='OK';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='COPY';btn.classList.remove('copied');},2000);
+// Interactive clipboard helper
+function copyValue(e, text, btn){
+  e.preventDefault();
+  navigator.clipboard.writeText(text).then(()=>{
+    const prev = btn.textContent;
+    btn.textContent = 'COPIED';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent = prev;
+      btn.classList.remove('copied');
+    }, 1800);
   });
 }
 </script>
