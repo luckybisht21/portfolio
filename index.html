@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lucky Bisht — Robotics Software Engineer (SLAM · Sensor Fusion · ROS2)</title>
+<meta name="description" content="Lucky Bisht — robotics engineer focused on SLAM, sensor fusion (EKF, FAST-LIO, VINS-Fusion) and Nav2 navigation. ROS2, ESP32, Raspberry Pi 5. GGSIPU Delhi, class of 2027."/>
+<meta property="og:title" content="Lucky Bisht — Robotics Software Engineer"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue-deep:#081b33;
+  --blue-mid:#0f2d52;
+  --blue-surface:#0b2444;
+  --blue-panel:#133863;
+  --line:#7fa8d6;
+  --line-bright:#b8d5f8;
+  --line-dim:#2a486c;
+  --ink-light:#e2ecf7;
+  --ink-muted:#94adc7;
+  --accent:#ff6b35;
+  --accent-glow:rgba(255,107,53,0.25);
+  --ok:#38d996;
+  --ok-glow:rgba(56,217,150,0.2);
+  --ff-head:'Space Grotesk',sans-serif;
+  --ff-body:'IBM Plex Sans',sans-serif;
+  --ff-mono:'IBM Plex Mono',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background-color:var(--blue-deep);
+  color:var(--line);
+  font-family:var(--ff-body);
+  line-height:1.6;
+  background-image:
+    radial-gradient(var(--blue-mid) 1px, transparent 1px),
+    linear-gradient(to right, rgba(42,72,108,0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42,72,108,0.25) 1px, transparent 1px);
+  background-size:40px 40px, 20px 20px, 20px 20px;
+  overflow-x:hidden;
+}
+
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 36px;}
+@media(max-width:768px){.wrap{padding:0 20px;}}
+
+/* ── Technical Nav ─────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:14px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(8,27,51,0.88);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line-dim);
+}
+.nav-logo{
+  font-family:var(--ff-mono);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  color:#fff;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo::before{
+  content:'';display:inline-block;width:10px;height:10px;
+  border:2px solid var(--accent);
+}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--line);
+  transition:all .2s ease;
+}
+.nav-links a:hover{color:#fff;text-shadow:0 0 8px var(--line);}
+.nav-status{
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--ok);
+  border:1px solid var(--ok);
+  background:var(--ok-glow);
+  padding:5px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-status i{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ok);
+  box-shadow:0 0 8px var(--ok);
+  animation:pulse 2s infinite ease-in-out;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)}}
+@media(max-width:860px){.nav-links{display:none;}}
+
+/* ── Hero Section ──────────────────────────────────────────── */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 60px;}
+.sys-id{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+}
+.sys-id::after{content:'';flex:1;max-width:80px;height:1px;background:var(--accent);}
+h1.name{
+  font-family:var(--ff-head);
+  font-weight:700;
+  font-size:clamp(46px,7vw,86px);
+  color:#fff;
+  letter-spacing:-2px;
+  line-height:0.95;
+}
+h1.name em{font-style:normal;color:var(--accent);}
+.role-pills{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin:20px 0;
+  font-family:var(--ff-mono);
+  font-size:11px;
+}
+.role-pill{
+  background:var(--blue-surface);
+  border:1px solid var(--line-dim);
+  padding:4px 10px;
+  color:var(--line-bright);
+}
+.role-pill b{color:var(--accent);}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr 0.95fr;
+  gap:36px;
+  align-items:start;
+  margin-top:24px;
+}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;}}
+.hero-desc{
+  font-size:15.5px;
+  color:var(--ink-light);
+  line-height:1.8;
+  margin-bottom:28px;
+}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  padding:13px 24px;
+  text-transform:uppercase;
+  transition:all .25s ease;
+  display:inline-flex;align-items:center;gap:8px;
+  position:relative;
+}
+.btn-fill{
+  background:var(--accent);
+  border:1.5px solid var(--accent);
+  color:var(--blue-deep);
+}
+.btn-fill:hover{
+  background:#ff8452;
+  box-shadow:0 0 20px var(--accent-glow);
+}
+.btn-ghost{
+  border:1.5px solid var(--line-dim);
+  color:#fff;
+  background:rgba(11,36,68,0.4);
+}
+.btn-ghost:hover{
+  border-color:var(--line);
+  background:var(--blue-surface);
+}
+
+/* ── Live System Telemetry HUD Panel (Replacing Fig 1) ─────── */
+.telemetry-hud{
+  border:1.5px solid var(--line);
+  background:rgba(8,27,51,0.85);
+  box-shadow:0 12px 35px rgba(0,0,0,0.4), inset 0 0 15px rgba(15,45,82,0.6);
+  display:flex;
+  flex-direction:column;
+}
+.hud-header{
+  padding:10px 16px;
+  background:var(--blue-panel);
+  border-bottom:1px solid var(--line-dim);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:var(--ff-mono);
+  font-size:10.5px;
+}
+.hud-title{
+  color:#fff;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:1px;
+}
+.hud-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);}
+.hud-rate{color:var(--accent);font-size:10px;letter-spacing:1px;}
+
+.hud-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--line-dim);
+}
+.hud-stat{
+  background:var(--blue-surface);
+  padding:14px 16px;
+}
+.hud-stat small{
+  display:block;
+  font-family:var(--ff-mono);
+  font-size:9px;
+  color:var(--line);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+.hud-stat .val{
+  font-family:var(--ff-mono);
+  font-size:16px;
+  font-weight:700;
+  color:#fff;
+}
+.hud-stat .val span{
+  font-size:11px;
+  color:var(--accent);
+  font-weight:400;
+  margin-left:3px;
+}
+
+.hud-feed{
+  background:rgba(5,15,30,0.9);
+  padding:14px 16px;
+  border-top:1px solid var(--line-dim);
+  font-family:var(--ff-mono);
+  font-size:10.5px;
+  color:var(--line-bright);
+}
+.hud-feed-title{
+  color:var(--accent);
+  font-size:9.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+}
+.hud-log-row{
+  display:flex;
+  gap:12px;
+  padding:3px 0;
+  border-bottom:1px dashed rgba(42,72,108,0.4);
+}
+.hud-log-row:last-child{border-bottom:none;}
+.hud-log-time{color:var(--line-dim);}
+.hud-log-msg{color:var(--ink-light);}
+.hud-log-msg b{color:var(--ok);font-weight:600;}
+
+/* ── Engineering Title Block ───────────────────────────────── */
+.tblock{
+  border:1.5px solid var(--line);
+  background:rgba(11,36,68,0.7);
+  font-family:var(--ff-mono);
+  font-size:11px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  margin-top:32px;
+}
+.tblock-cell{
+  padding:10px 14px;
+  border-right:1px solid var(--line-dim);
+  border-top:1px solid var(--line-dim);
+}
+.tblock-cell:nth-child(4n){border-right:none;}
+.tblock-cell:nth-child(-n+4){border-top:none;}
+.tblock-cell small{
+  display:block;
+  color:var(--line-dim);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  margin-bottom:2px;
+}
+.tblock-cell b{
+  color:#fff;
+  font-size:12px;
+  font-weight:600;
+  font-family:var(--ff-body);
+}
+@media(max-width:700px){.tblock{grid-template-columns:repeat(2,1fr);}.tblock-cell:nth-child(2n){border-right:none;}}
+
+/* ── Section Scaffolding ───────────────────────────────────── */
+section{padding:100px 0;position:relative;}
+.sec-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:44px;
+  border-bottom:1px solid var(--line-dim);
+  padding-bottom:16px;
+}
+.sec-tag{
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.sec-title{
+  font-family:var(--ff-head);
+  font-size:clamp(26px,3.6vw,38px);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-0.5px;
+}
+.sec-sheet{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--line-dim);
+  letter-spacing:1.5px;
+}
+.divider{height:1px;background:var(--line-dim);width:100%;}
+
+/* ── Experience BOM Table ─────────────────────────────────── */
+.bom{
+  border:1px solid var(--line-dim);
+  background:rgba(8,27,51,0.5);
+}
+.bom-head{
+  display:grid;
+  grid-template-columns:70px 1.8fr 1fr 110px;
+  background:var(--blue-panel);
+  font-family:var(--ff-mono);
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--line-bright);
+  border-bottom:1px solid var(--line-dim);
+}
+.bom-head div{padding:12px 16px;border-right:1px solid var(--line-dim);}
+.bom-head div:last-child{border-right:none;}
+.bom-row{border-bottom:1px solid var(--line-dim);}
+.bom-row:last-child{border-bottom:none;}
+.bom-meta{
+  display:grid;
+  grid-template-columns:70px 1.8fr 1fr 110px;
+}
+.bom-meta div{padding:18px 16px;border-right:1px solid var(--line-dim);}
+.bom-meta div:last-child{border-right:none;}
+.bom-idx{font-family:var(--ff-mono);color:var(--accent);font-weight:700;font-size:15px;}
+.bom-role-title{font-size:16px;font-weight:600;color:#fff;}
+.bom-org{font-family:var(--ff-mono);font-size:12px;color:var(--line);margin-top:2px;}
+.bom-timeline{font-family:var(--ff-mono);font-size:11.5px;color:var(--ink-muted);}
+.badge{
+  display:inline-block;padding:3px 8px;font-family:var(--ff-mono);font-size:9.5px;font-weight:600;letter-spacing:1px;
+}
+.badge-active{color:var(--ok);border:1px solid var(--ok);background:var(--ok-glow);}
+.badge-past{color:var(--line-dim);border:1px solid var(--line-dim);}
+
+.bom-content{padding:0 24px 22px 86px;}
+@media(max-width:768px){
+  .bom-head{display:none;}
+  .bom-meta{grid-template-columns:1fr;gap:6px;}
+  .bom-meta div{border-right:none;padding:12px 16px 0;}
+  .bom-content{padding:12px 16px 20px;}
+}
+.bom-content ul{list-style:none;}
+.bom-content li{
+  font-size:14px;
+  color:var(--ink-light);
+  line-height:1.75;
+  padding:4px 0 4px 18px;
+  position:relative;
+}
+.bom-content li::before{
+  content:'›';position:absolute;left:0;color:var(--accent);font-weight:700;font-size:16px;line-height:1;
+}
+.tech-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.tpill{
+  font-family:var(--ff-mono);
+  font-size:9.5px;
+  color:var(--line-bright);
+  background:var(--blue-surface);
+  border:1px solid var(--line-dim);
+  padding:3px 10px;
+}
+
+/* Education strip */
+.edu-card{
+  margin-top:24px;
+  border:1px solid var(--line-dim);
+  background:rgba(11,36,68,0.4);
+  padding:20px 24px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.edu-left b{font-size:16px;color:#fff;}
+.edu-left p{font-family:var(--ff-mono);font-size:12px;color:var(--line);margin-top:4px;}
+.edu-cgpa{text-align:right;}
+.edu-cgpa .val{font-family:var(--ff-mono);font-size:24px;font-weight:700;color:var(--accent);}
+.edu-cgpa .lbl{font-family:var(--ff-mono);font-size:9px;color:var(--line-dim);letter-spacing:1px;text-transform:uppercase;}
+
+/* ── Visual Project Cards ──────────────────────────────────── */
+.projects-grid{display:flex;flex-direction:column;gap:30px;}
+.project-card{
+  border:1.5px solid var(--line-dim);
+  background:var(--blue-surface);
+  display:grid;
+  grid-template-columns:480px 1fr;
+  transition:border-color .25s ease;
+}
+.project-card:hover{border-color:var(--line);}
+@media(max-width:1100px){.project-card{grid-template-columns:400px 1fr;}}
+@media(max-width:860px){.project-card{grid-template-columns:1fr;}}
+
+.project-visual{
+  background:rgba(8,27,51,0.85);
+  border-right:1px solid var(--line-dim);
+  display:flex;flex-direction:column;
+  position:relative;
+}
+@media(max-width:860px){.project-visual{border-right:none;border-bottom:1px solid var(--line-dim);}}
+
+.visual-canvas{
+  position:relative;
+  aspect-ratio:16/9;
+  width:100%;
+  overflow:hidden;
+  background:#050f1e;
+  border-bottom:1px solid var(--line-dim);
+}
+.visual-canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.visual-canvas.product{
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(127,168,214,0.22) 0%, rgba(19,56,99,0.35) 45%, rgba(5,15,30,0.95) 100%),
+    linear-gradient(rgba(42,72,108,0.35) 1px, transparent 1px) 0 0/24px 24px,
+    linear-gradient(90deg, rgba(42,72,108,0.35) 1px, transparent 1px) 0 0/24px 24px,
+    #050f1e;
+}
+.visual-canvas.product img{object-fit:contain;padding:14px 18px 22px;filter:drop-shadow(0 14px 18px rgba(0,0,0,0.55));}
+.visual-canvas::before,.visual-canvas::after{
+  content:'';position:absolute;width:16px;height:16px;z-index:2;pointer-events:none;
+  border:2px solid var(--accent);
+}
+.visual-canvas::before{top:8px;left:8px;border-right:none;border-bottom:none;}
+.visual-canvas::after{bottom:8px;right:8px;border-left:none;border-top:none;}
+.media-tag{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:6px 12px;
+  background:linear-gradient(transparent,rgba(5,15,30,0.92));
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--line-bright);
+}
+.media-tag b{color:var(--ok);font-weight:600;display:flex;align-items:center;gap:6px;}
+.media-tag b::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);animation:pulse 2s infinite ease-in-out;}
+.media-tag.static b{color:var(--accent);}
+.media-tag.static b::before{background:var(--accent);box-shadow:0 0 6px var(--accent);animation:none;}
+
+.metric-strip{
+  border-top:1px solid var(--line-dim);
+  background:var(--blue-deep);
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  font-family:var(--ff-mono);
+}
+.m-cell{padding:8px 12px;border-right:1px solid var(--line-dim);}
+.m-cell:last-child{border-right:none;}
+.m-cell small{display:block;font-size:8px;color:var(--line-dim);text-transform:uppercase;letter-spacing:1px;}
+.m-cell b{color:var(--ok);font-size:12px;}
+
+.project-details{padding:28px 32px;display:flex;flex-direction:column;}
+.p-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.p-title{font-family:var(--ff-head);font-size:21px;color:#fff;font-weight:700;}
+.p-date{font-family:var(--ff-mono);font-size:11px;color:var(--line-dim);}
+.p-desc{font-size:14px;color:var(--ink-light);line-height:1.8;margin-bottom:18px;}
+.p-actions{margin-top:auto;display:flex;align-items:center;gap:18px;padding-top:14px;border-top:1px dashed var(--line-dim);}
+.p-link{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:1px;
+  color:var(--accent);
+  display:inline-flex;align-items:center;gap:6px;
+  font-weight:600;
+  transition:all .2s;
+}
+.p-link:hover{color:#fff;text-shadow:0 0 6px var(--accent);}
+
+/* ── Technical Skills Matrix ───────────────────────────────── */
+.matrix-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line-dim);
+  border:1px solid var(--line-dim);
+}
+@media(max-width:900px){.matrix-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.matrix-grid{grid-template-columns:1fr;}}
+.matrix-panel{background:var(--blue-deep);padding:24px;}
+.m-panel-head{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line-dim);
+  display:flex;justify-content:space-between;
+}
+.m-panel-head span{color:var(--line-dim);}
+.tag-collection{display:flex;flex-wrap:wrap;gap:6px;}
+.matrix-tag{
+  font-family:var(--ff-mono);
+  font-size:11px;
+  color:var(--line-bright);
+  border:1px solid var(--line-dim);
+  background:rgba(11,36,68,0.5);
+  padding:4px 10px;
+}
+
+/* ── Achievements Stamps ───────────────────────────────────── */
+.stamp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:900px){.stamp-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.stamp-grid{grid-template-columns:1fr;}}
+.stamp{
+  border:1.5px dashed var(--accent);
+  background:rgba(255,107,53,0.03);
+  padding:20px 16px;
+  position:relative;
+  text-align:center;
+}
+.st-badge{
+  font-family:var(--ff-mono);
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:2px;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  padding:2px 8px;
+  display:inline-block;
+  margin-bottom:10px;
+}
+.st-title{font-family:var(--ff-head);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.st-desc{font-family:var(--ff-mono);font-size:10px;color:var(--ink-muted);line-height:1.5;}
+
+.cert-table{margin-top:36px;border:1px solid var(--line-dim);}
+.cert-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;
+  border-bottom:1px solid var(--line-dim);
+  background:rgba(8,27,51,0.4);
+  font-size:13.5px;
+}
+.cert-row:last-child{border-bottom:none;}
+.cert-row span:first-child{color:#fff;}
+.cert-row span:last-child{font-family:var(--ff-mono);font-size:11px;color:var(--line-bright);}
+
+/* ── Contact Section ───────────────────────────────────────── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+@media(max-width:800px){.contact-layout{grid-template-columns:1fr;}}
+.contact-box h3{font-family:var(--ff-head);font-size:24px;color:#fff;margin-bottom:12px;}
+.contact-box p{font-size:15px;color:var(--ink-light);line-height:1.8;margin-bottom:24px;}
+.terminal-channels{
+  border:1px solid var(--line-dim);
+  background:var(--blue-deep);
+  display:flex;flex-direction:column;
+}
+.channel-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line-dim);
+  font-family:var(--ff-mono);
+  font-size:12px;
+  color:var(--line-bright);
+  transition:background .2s;
+}
+.channel-row:last-child{border-bottom:none;}
+.channel-row:hover{background:var(--blue-surface);color:#fff;}
+.c-sym{color:var(--accent);font-weight:700;}
+.c-copy{
+  margin-left:auto;
+  font-family:var(--ff-mono);
+  font-size:9px;
+  background:none;
+  border:1px solid var(--line-dim);
+  color:var(--line-dim);
+  padding:4px 8px;
+  cursor:pointer;
+  letter-spacing:1px;
+}
+.c-copy:hover,.c-copy.copied{border-color:var(--ok);color:var(--ok);}
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--line-dim);
+  padding:24px 36px;
+  background:var(--blue-deep);
+}
+.foot-content{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+  font-family:var(--ff-mono);
+  font-size:10px;
+  color:var(--line-dim);
+  letter-spacing:1px;
+}
+
+/* ── Scroll Reveal ─────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(0.16,1,0.3,1),transform .6s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:none;}
+
+:root{--accent-soft:rgba(255,107,53,0.12)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.nav-links a.active{color:#fff;border-bottom:1px solid var(--accent);padding-bottom:3px}
+.nav-cta{font-family:var(--ff-mono);font-size:10px;letter-spacing:1.5px;color:var(--ok);border:1px solid var(--ok);background:var(--ok-glow);padding:6px 12px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-cta i{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 2s infinite}
+h1.name{font-size:clamp(48px,8vw,96px)}
+.headline{font-family:var(--ff-head);font-size:clamp(20px,2.6vw,30px);font-weight:500;color:var(--ink-light);line-height:1.3;max-width:640px;margin:18px 0 14px}
+.headline em{font-style:normal;color:var(--accent)}
+.avail{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:11px;letter-spacing:1px;color:var(--line-bright);border:1px solid var(--line-dim);background:var(--blue-surface);padding:6px 12px;margin-bottom:22px}
+.avail i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.board{border:1.5px solid var(--line);background:rgba(8,27,51,.9);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.board-head{display:flex;justify-content:space-between;padding:10px 16px;background:var(--blue-panel);border-bottom:1px solid var(--line-dim);font-family:var(--ff-mono);font-size:10.5px;letter-spacing:1.5px;color:#fff;font-weight:700}
+.board-head span:last-child{color:var(--accent);font-weight:500}
+.b-row{display:grid;grid-template-columns:86px 1fr;gap:14px;padding:15px 16px;border-bottom:1px solid var(--line-dim)}
+.b-row:last-of-type{border-bottom:none}
+.b-state{font-family:var(--ff-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;display:flex;align-items:flex-start;gap:7px;padding-top:2px}
+.b-state::before{content:'';width:8px;height:8px;border-radius:50%;margin-top:2px;flex:none}
+.b-now{color:var(--ok)}.b-now::before{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.b-build{color:var(--accent)}.b-build::before{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.b-next{color:var(--line)}.b-next::before{border:1.5px solid var(--line)}
+.b-row b{display:block;color:#fff;font-size:14px;font-weight:600;margin-bottom:2px}
+.b-row p{font-size:12.5px;color:var(--ink-muted);line-height:1.55}
+.board-foot{padding:10px 16px;border-top:1px solid var(--line-dim);background:rgba(5,15,30,.9);font-family:var(--ff-mono);font-size:10.5px;color:var(--line)}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);border:1.5px solid var(--line);background:rgba(11,36,68,.7);margin-top:40px}
+.stat{padding:18px 16px;border-right:1px solid var(--line-dim)}
+.stat:last-child{border-right:none}
+.stat .n{font-family:var(--ff-head);font-size:clamp(22px,2.6vw,32px);font-weight:700;color:#fff;line-height:1}
+.stat .n span{color:var(--accent)}
+.stat small{display:block;margin-top:8px;font-family:var(--ff-mono);font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-muted);line-height:1.45}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.stat:nth-child(3){border-right:none}.stat:nth-child(-n+3){border-bottom:1px solid var(--line-dim)}}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.stat{border-right:1px solid var(--line-dim)!important;border-bottom:1px solid var(--line-dim)}.stat:nth-child(2n){border-right:none!important}}
+.sec-lead{max-width:680px;color:var(--ink-muted);font-size:15px;line-height:1.75;margin:-20px 0 36px}
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line-dim)}
+.pipe-col{padding:20px 18px 22px;background:rgba(8,27,51,.55);border-right:1px solid var(--line-dim);position:relative}
+.pipe-col:last-child{border-right:none}
+.pipe-col:not(:last-child)::after{content:'▶';position:absolute;right:-8px;top:24px;z-index:2;font-size:11px;color:var(--accent);background:var(--blue-deep);padding:2px 0}
+.pipe-n{font-family:var(--ff-mono);font-size:10px;color:var(--accent);letter-spacing:2px}
+.pipe-col h3{font-family:var(--ff-head);font-size:18px;color:#fff;margin:4px 0 12px}
+.pipe-col ul{list-style:none}
+.pipe-col li{font-size:13px;color:var(--ink-light);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.pipe-col li::before{content:'›';position:absolute;left:0;color:var(--accent);font-weight:700}
+.pipe-used{margin-top:14px;padding-top:10px;border-top:1px dashed var(--line-dim);font-family:var(--ff-mono);font-size:10px;color:var(--line);line-height:1.5}
+@media(max-width:1000px){.pipe{grid-template-columns:1fr}.pipe-col{border-right:none;border-bottom:1px solid var(--line-dim)}.pipe-col::after{display:none}}
+.tl{position:relative;padding-left:34px}
+.tl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1px;background:var(--line-dim)}
+.tl-item{position:relative;border:1px solid var(--line-dim);background:rgba(11,36,68,.5);padding:24px 28px;margin-bottom:20px;transition:border-color .25s}
+.tl-item:hover{border-color:var(--line)}
+.tl-item::before{content:'';position:absolute;left:-31px;top:30px;width:11px;height:11px;background:var(--blue-deep);border:2px solid var(--accent)}
+.tl-item.now::before{background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.tl-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.tl-role{font-family:var(--ff-head);font-size:20px;font-weight:700;color:#fff}
+.tl-org{font-family:var(--ff-mono);font-size:12px;color:var(--line);margin-top:3px}
+.tl-date{font-family:var(--ff-mono);font-size:11.5px;color:var(--ink-muted);text-align:right}
+.tl-item ul{list-style:none;margin-top:14px}
+.tl-item li{font-size:14px;color:var(--ink-light);line-height:1.75;padding:4px 0 4px 18px;position:relative}
+.tl-item li::before{content:'›';position:absolute;left:0;color:var(--accent);font-weight:700;font-size:16px}
+.p-kind{display:inline-block;font-family:var(--ff-mono);font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);background:var(--accent-soft);padding:2px 8px;margin-bottom:8px}
+h3.p-title{line-height:1.25}
+.key{display:flex;align-items:baseline;gap:12px;margin:2px 0 14px;padding:10px 14px;border-left:3px solid var(--ok);background:var(--ok-glow)}
+.key b{font-family:var(--ff-mono);font-size:20px;color:var(--ok);white-space:nowrap}
+.key span{font-size:13px;color:var(--ink-light);line-height:1.5}
+.visual-canvas.plate{background:radial-gradient(ellipse at 50% 60%,#f3f7fc 0%,#c9d9ec 100%)}
+.visual-canvas.plate img{object-fit:contain;mix-blend-mode:multiply;padding:10px 14px 26px}
+.visual-canvas.plate .media-tag{background:linear-gradient(transparent,rgba(5,15,30,.85))}
+.p-desc code{font-family:var(--ff-mono);font-size:12px;color:var(--line-bright);background:var(--blue-panel);padding:1px 6px}
+.matrix-panel small.sub{display:block;margin-top:10px;font-family:var(--ff-mono);font-size:10px;color:var(--ink-muted)}
+.contact-box h3{font-size:clamp(26px,3vw,36px);line-height:1.15}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav><a href="#hero" class="nav-logo">LUCKY<span>//</span>BISHT</a>
+<ul class="nav-links"><li><a href="#experience">Experience</a></li><li><a href="#projects">Projects</a></li><li><a href="#stack">Autonomy Stack</a></li><li><a href="#skills">Skills</a></li><li><a href="#achievements">Recognition</a></li><li><a href="#contact">Contact</a></li></ul>
+<div class="nav-cta"><i></i>OPEN TO ROLES · 2027</div></nav>
+
+<section id="hero"><div class="wrap">
+<div class="sys-id reveal">Robotics software · SLAM · Sensor fusion</div>
+<h1 class="name reveal">LUCKY<br><em>BISHT</em></h1>
+<p class="headline reveal">I build <em>localization, mapping and navigation</em> systems for mobile robots — from ESP32 firmware to ROS2 Nav2 stacks on quadrupeds.</p>
+<div class="hero-grid"><div>
+<div class="avail reveal"><i></i>Final-year B.Tech, Automation &amp; Robotics · GGSIPU Delhi · Class of 2027</div>
+<p class="hero-desc reveal">Three robotics internships across embedded SLAM, real-hardware control and underwater simulation research. I work in ROS2, EKF-based sensor fusion and LiDAR/visual-inertial odometry, and I like taking a system from a Gazebo world to a Raspberry Pi or ESP32 on a real robot.</p>
+<div class="hero-cta reveal"><a href="#projects" class="btn btn-fill">View projects →</a><a href="mailto:luckybisht0094@gmail.com" class="btn btn-ghost">Email me</a><a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a><a href="https://www.linkedin.com/in/lucky-bisht-b176b2291/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a></div></div>
+<div class="board reveal"><div class="board-head"><span>CURRENT FOCUS</span><span>SEP 2026</span></div>
+<div class="b-row"><div class="b-state b-now">NOW</div><div><b>Navyug Infosolutions</b><p>VIO + LIO fusion on a Raspberry Pi 5 (OAK-D Lite, 2D LiDAR, FAST-LIO, Docker) and SLAM → Nav2 on a Unitree A2 Pro.</p></div></div>
+<div class="b-row"><div class="b-state b-build">BUILDING</div><div><b>LIO vs VIO on Unitree Go2</b><p>FAST-LIO baseline done at 0.220 m RMSE; VINS-Fusion comparison in progress.</p></div></div>
+<div class="b-row"><div class="b-state b-next">NEXT</div><div><b>EKF fusion + Nav2</b><p>Fuse both odometry sources and navigate autonomously in simulation.</p></div></div>
+<div class="board-foot">ROS2 Humble · Docker · Nav2 · evo</div></div></div>
+<div class="stats reveal"><div class="stat"><div class="n">3</div><small>Robotics internships</small></div><div class="stat"><div class="n">5</div><small>ROS2 projects built</small></div><div class="stat"><div class="n">0.220<span> m</span></div><small>FAST-LIO baseline RMSE</small></div><div class="stat"><div class="n">6<span>/6</span></div><small>Mines detected, ≥0.99 conf.</small></div><div class="stat"><div class="n">≤2<span>°</span></div><small>PID heading error on hardware</small></div><div class="stat"><div class="n">200<span>+</span></div><small>DSA problems solved</small></div></div></div></section>
+<div class="divider"></div>
+
+<section id="experience"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">Where I've worked</div><h2 class="sec-title">Experience</h2></div><div class="sec-sheet">3 INTERNSHIPS</div></div>
+<div class="tl"><div class="tl-item reveal now"><div class="tl-top"><div><div class="tl-role">Embedded Robotics Intern</div><div class="tl-org">Navyug Infosolutions Pvt. Ltd. · Delhi</div></div><div class="tl-date">Jun 2026 – Present <span class="badge badge-active" style="margin-left:6px">● CURRENT</span></div></div><ul><li>Building a real-time VIO + LIO sensor-fusion pipeline on the FAST-LIO ROS2 architecture, integrating an OAK-D Lite camera, 2D LiDAR, IMU and wheel encoders on a Raspberry Pi 5, containerised with Docker.</li><li>Developing LiDAR-IMU SLAM for a Unitree A2 Pro quadruped that feeds a Nav2 path-planning stack for autonomous navigation in a security-domain deployment (details under NDA).</li></ul><div class="tech-pills"><span class=tpill>FAST-LIO</span><span class=tpill>VIO + LIO</span><span class=tpill>OAK-D Lite</span><span class=tpill>Nav2</span><span class=tpill>Raspberry Pi 5</span><span class=tpill>Docker</span></div></div><div class="tl-item reveal"><div class="tl-top"><div><div class="tl-role">Robotics Engineer Intern</div><div class="tl-org">Flywheel Aerospace · Delhi</div></div><div class="tl-date">May 2026 – Jun 2026</div></div><ul><li>Engineered “Luna”, a differential-drive robot on ESP32 + micro-ROS, closing the full sensor-actuator ROS2 loop with IMU, ToF sensors and encoders.</li><li>Implemented a PID heading-lock controller with ≤2° heading error in continuous testing; validated differential-drive and obstacle-avoidance behaviour.</li></ul><div class="tech-pills"><span class=tpill>ESP32</span><span class=tpill>micro-ROS</span><span class=tpill>PID</span><span class=tpill>IMU</span><span class=tpill>ToF</span><span class=tpill>Encoders</span></div></div><div class="tl-item reveal"><div class="tl-top"><div><div class="tl-role">Research Intern</div><div class="tl-org">IIT Mandi · Himachal Pradesh</div></div><div class="tl-date">Jun 2025 – Aug 2025</div></div><ul><li>Designed a ROS2 Humble + Gazebo Ignition simulation pipeline for an autonomous underwater robot, integrating IMU and depth sensors.</li><li>Characterised IMU and depth-sensor noise in RViz to inform EKF tuning parameters; modelled a robotic brush mechanism in MATLAB/Simulink ahead of prototyping.</li></ul><div class="tech-pills"><span class=tpill>ROS2 Humble</span><span class=tpill>Gazebo Ignition</span><span class=tpill>EKF</span><span class=tpill>RViz</span><span class=tpill>MATLAB/Simulink</span></div></div></div>
+<div class="edu-card reveal"><div class="edu-left"><b>B.Tech, Automation &amp; Robotics — GGSIPU Delhi (USAR)</b><p>2023 – 2027</p></div><div class="edu-cgpa"><div class="val">8.50</div><div class="lbl">CGPA / 10</div></div></div></div></section>
+<div class="divider"></div>
+
+<section id="projects"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">Selected work</div><h2 class="sec-title">Projects</h2></div><div class="sec-sheet">5 PROJECTS</div></div>
+<p class="sec-lead reveal">Each project shows a measurable result. Live captures are real recordings from my own runs.</p>
+<div class="projects-grid"><article class="project-card reveal"><div class="project-visual"><div class="visual-canvas product"><img src="assets/go2.png" alt="Unitree Go2 quadruped used for the LIO vs VIO simulation study"/><div class="media-tag static"><span>Unitree Go2</span><b>Simulation platform</b></div></div><div class="metric-strip"><div class="m-cell"><small>FAST-LIO RMSE</small><b>0.220 m (evo)</b></div><div class="m-cell"><small>Environment</small><b>Docker · ROS2 Humble</b></div></div></div>
+<div class="project-details"><div class="p-header"><div><span class="p-kind">Research · Simulation</span><h3 class="p-title">LIO vs. VIO Comparison with EKF Fusion &amp; Nav2 — Unitree Go2</h3></div><span class="p-date">2026 · In progress</span></div>
+<div class="key"><b>0.220 m</b><span>RMSE for the FAST-LIO baseline (mean 0.197 m, max 0.533 m), evaluated with evo trajectory metrics.</span></div><p class="p-desc">A fully simulated, Dockerised ROS2 Humble pipeline that compares LiDAR-Inertial (FAST-LIO) and Visual-Inertial (VINS-Fusion) odometry on a Unitree Go2 quadruped. The FAST-LIO baseline is complete; VINS-Fusion, <code>robot_localization</code> EKF fusion and Nav2 autonomous navigation are being added for a final three-way comparison.</p><div class="tech-pills" style="margin-bottom:18px"><span class="tpill">ROS2 Humble</span><span class="tpill">Docker</span><span class="tpill">FAST-LIO</span><span class="tpill">VINS-Fusion</span><span class="tpill">Nav2</span><span class="tpill">EKF</span><span class="tpill">evo</span></div><div class="p-actions"><a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="p-link">More on GitHub ↗</a></div></div></article><article class="project-card reveal"><div class="project-visual"><div class="visual-canvas "><img src="assets/auv-demo.gif" alt="AUV mine detection run in Gazebo with live terminal output"/><div class="media-tag "><span>Gazebo + mission logger</span><b>Live capture</b></div></div><div class="metric-strip"><div class="m-cell"><small>Sonar</small><b>30 m / 120° FOV</b></div><div class="m-cell"><small>Sensors</small><b>50 Hz IMU + 4-beam DVL</b></div></div></div>
+<div class="project-details"><div class="p-header"><div><span class="p-kind">Simulation · GPS-denied</span><h3 class="p-title">AUV Mine Surveillance — Underwater Navigation Simulation</h3></div><span class="p-date">Mar – May 2026</span></div>
+<div class="key"><b>6 / 6</b><span>simulated mines detected across repeated runs at ≥0.99 sonar confidence, logged to timestamped CSV.</span></div><p class="p-desc">A 6-DOF, 4-thruster torpedo-style AUV that surveys a seafloor minefield without GPS. A 50 Hz IMU and 4-beam DVL feed a <code>robot_localization</code> EKF for drift-corrected odometry, SLAM Toolbox builds an occupancy map from the 120° sonar, and a mission-logger node classifies every contact against the vehicle pose.</p><div class="tech-pills" style="margin-bottom:18px"><span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Classic</span><span class="tpill">Python (rclpy)</span><span class="tpill">EKF</span><span class="tpill">SLAM Toolbox</span><span class="tpill">URDF/Xacro</span></div><div class="p-actions"><a href="https://github.com/luckybisht21/auv-mine-surveillance" target="_blank" rel="noopener" class="p-link">GitHub Repository ↗</a><a href="https://github.com/luckybisht21/auv-mine-surveillance/blob/main/results/sample_mission_log.csv" target="_blank" rel="noopener" class="p-link">Sample Mission Log ↗</a></div></div></article><article class="project-card reveal"><div class="project-visual"><div class="visual-canvas plate"><img src="assets/luna.jpg" alt="Luna — ESP32 + micro-ROS differential-drive robot built at Flywheel Aerospace"/><div class="media-tag static"><span>Luna · Flywheel Aerospace</span><b>Real hardware</b></div></div><div class="metric-strip"><div class="m-cell"><small>Heading accuracy</small><b>≤ 2°</b></div><div class="m-cell"><small>Firmware stack</small><b>ESP32 + micro-ROS</b></div></div></div>
+<div class="project-details"><div class="p-header"><div><span class="p-kind">Hardware · Internship</span><h3 class="p-title">Luna — ESP32 Differential-Drive Robot with micro-ROS</h3></div><span class="p-date">May – Jun 2026</span></div>
+<div class="key"><b>≤ 2°</b><span>heading error in continuous testing with a PID heading-lock controller.</span></div><p class="p-desc">Engineered a 2-wheel differential-drive platform on an ESP32 running micro-ROS, closing the full sensor-to-actuator ROS2 loop with an IMU, ToF distance sensors and wheel encoders. Implemented and tuned the PID heading lock, then validated differential-drive and obstacle-avoidance behaviour on the physical robot.</p><div class="tech-pills" style="margin-bottom:18px"><span class="tpill">ESP32</span><span class="tpill">micro-ROS</span><span class="tpill">PID Control</span><span class="tpill">IMU</span><span class="tpill">ToF</span><span class="tpill">Encoders</span><span class="tpill">ROS2</span></div><div class="p-actions"><a href="#experience" target="_blank" rel="noopener" class="p-link">See internship ↗</a></div></div></article><article class="project-card reveal"><div class="project-visual"><div class="visual-canvas "><img src="assets/sensor-fusion-demo.gif" alt="Sensor-fusion robot with camera feed and live dashboard"/><div class="media-tag "><span>Dashboard + camera feed</span><b>Live capture</b></div></div><div class="metric-strip"><div class="m-cell"><small>IMU / GPS / Camera</small><b>50 / 1 / 30 Hz</b></div><div class="m-cell"><small>Validation</small><b>Webcam + Gazebo</b></div></div></div>
+<div class="project-details"><div class="p-header"><div><span class="p-kind">Simulation · Real camera</span><h3 class="p-title">ROS2 Multi-Sensor Robot — IMU, GPS &amp; Camera</h3></div><span class="p-date">Mar 2026</span></div>
+<div class="key"><b>3 streams</b><span>of asynchronous sensor data unified into a live 0.5 s terminal dashboard and a timestamped CSV logger.</span></div><p class="p-desc">A 4-wheel differential-drive robot built from scratch in ROS2 Humble and Gazebo Classic, with dedicated subscriber nodes for each sensor. The camera pipeline was validated against a physical laptop webcam via <code>v4l2_camera</code>, and the robot is driven with <code>teleop_twist_keyboard</code>.</p><div class="tech-pills" style="margin-bottom:18px"><span class="tpill">ROS2 Humble</span><span class="tpill">Gazebo Classic</span><span class="tpill">Python</span><span class="tpill">URDF/Xacro</span><span class="tpill">v4l2_camera</span></div><div class="p-actions"><a href="https://github.com/luckybisht21/ros2-robot-simulation" target="_blank" rel="noopener" class="p-link">GitHub Repository ↗</a><a href="https://www.youtube.com/watch?v=77MXowE__Yk" target="_blank" rel="noopener" class="p-link">Demo Video ↗</a></div></div></article><article class="project-card reveal"><div class="project-visual"><div class="visual-canvas "><img src="assets/diff-drive-demo.gif" alt="Differential-drive robot with LiDAR rays in the 4-room arena"/><div class="media-tag "><span>LiDAR rays · 4-room arena</span><b>Live capture</b></div></div><div class="metric-strip"><div class="m-cell"><small>LiDAR</small><b>360° · 30 Hz · 8 m</b></div><div class="m-cell"><small>Analytics</small><b>6 algorithms</b></div></div></div>
+<div class="project-details"><div class="p-header"><div><span class="p-kind">Simulation · SLAM</span><h3 class="p-title">Differential-Drive Robot with LiDAR SLAM &amp; Analytics</h3></div><span class="p-date">Jan – Feb 2026</span></div>
+<div class="key"><b>4 rooms</b><span>mapped live with SLAM Toolbox, with scan data analysed by six algorithms and exported to Excel.</span></div><p class="p-desc">A 4-wheel robot with a 360° LiDAR (Gaussian noise model) modelled in URDF/Xacro, exploring a custom multi-room arena. A Python node classifies each scan as DANGER / CAUTION / SAFE in real time, and a post-session pipeline (threshold, moving average, Z-score, gradient, normalisation, zone classification) builds a 5-sheet Excel report.</p><div class="tech-pills" style="margin-bottom:18px"><span class="tpill">ROS2 Humble</span><span class="tpill">SLAM Toolbox</span><span class="tpill">RViz2</span><span class="tpill">Python</span><span class="tpill">OpenPyXL</span></div><div class="p-actions"><a href="https://github.com/luckybisht21/diff_robott_ws" target="_blank" rel="noopener" class="p-link">GitHub Repository ↗</a><a href="https://youtu.be/-FZfNeMrx5M" target="_blank" rel="noopener" class="p-link">Demo Video ↗</a></div></div></article></div></div></section>
+<div class="divider"></div>
+
+<section id="stack"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">How it fits together</div><h2 class="sec-title">Autonomy Stack I've Worked Across</h2></div><div class="sec-sheet">SENSE → CONTROL</div></div>
+<p class="sec-lead reveal">From raw sensor data to motor commands — the layers below are where my internships and projects have actually touched.</p>
+<div class="pipe reveal"><div class="pipe-col"><div class="pipe-n">01</div><h3>Sense</h3><ul><li>2D / 360° LiDAR</li><li>OAK-D Lite camera</li><li>IMU · DVL · depth</li><li>ToF · GPS · encoders</li></ul><div class="pipe-used">Navyug · AUV · Luna</div></div><div class="pipe-col"><div class="pipe-n">02</div><h3>Estimate</h3><ul><li>EKF (robot_localization)</li><li>LiDAR-inertial: FAST-LIO</li><li>Visual-inertial: VINS-Fusion</li><li>Evaluation with evo</li></ul><div class="pipe-used">Go2 study · AUV · Navyug</div></div><div class="pipe-col"><div class="pipe-n">03</div><h3>Map</h3><ul><li>SLAM Toolbox</li><li>Occupancy-grid mapping</li><li>Sonar &amp; LiDAR scan processing</li></ul><div class="pipe-used">Diff-drive · AUV · A2 Pro</div></div><div class="pipe-col"><div class="pipe-n">04</div><h3>Plan</h3><ul><li>Nav2 navigation stack</li><li>Waypoint navigation</li><li>Path planning on quadrupeds</li></ul><div class="pipe-used">A2 Pro · Go2 study</div></div><div class="pipe-col"><div class="pipe-n">05</div><h3>Control</h3><ul><li>PID heading lock</li><li>Differential-drive kinematics</li><li>Thruster mixing · micro-ROS</li></ul><div class="pipe-used">Luna · AUV</div></div></div></div></section>
+<div class="divider"></div>
+
+<section id="skills"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">Toolbox</div><h2 class="sec-title">Technical Skills</h2></div></div><div class="matrix-grid reveal"><div class="matrix-panel"><div class="m-panel-head">Robotics &amp; Middleware</div><div class="tag-collection"><span class=matrix-tag>ROS2 Humble</span><span class=matrix-tag>Nav2</span><span class=matrix-tag>SLAM Toolbox</span><span class=matrix-tag>micro-ROS</span><span class=matrix-tag>Gazebo Classic / Ignition</span><span class=matrix-tag>URDF / Xacro</span><span class=matrix-tag>RViz2</span></div></div><div class="matrix-panel"><div class="m-panel-head">Estimation &amp; Navigation</div><div class="tag-collection"><span class=matrix-tag>EKF sensor fusion</span><span class=matrix-tag>FAST-LIO (LIO)</span><span class=matrix-tag>VINS-Fusion (VIO)</span><span class=matrix-tag>Occupancy-grid SLAM</span><span class=matrix-tag>Nav2 path planning</span><span class=matrix-tag>PID control</span></div></div><div class="matrix-panel"><div class="m-panel-head">Sensors &amp; Hardware</div><div class="tag-collection"><span class=matrix-tag>LiDAR (2D)</span><span class=matrix-tag>OAK-D Lite</span><span class=matrix-tag>IMU</span><span class=matrix-tag>DVL</span><span class=matrix-tag>ToF</span><span class=matrix-tag>GPS</span><span class=matrix-tag>Encoders</span><span class=matrix-tag>ESP32</span><span class=matrix-tag>Raspberry Pi 5</span><span class=matrix-tag>Jetson</span></div></div><div class="matrix-panel"><div class="m-panel-head">Languages</div><div class="tag-collection"><span class=matrix-tag>Python</span><span class=matrix-tag>C++</span><span class=matrix-tag>MATLAB</span><span class=matrix-tag>Arduino</span></div></div><div class="matrix-panel"><div class="m-panel-head">Tools</div><div class="tag-collection"><span class=matrix-tag>Docker</span><span class=matrix-tag>Git / GitHub</span><span class=matrix-tag>Linux (Ubuntu)</span><span class=matrix-tag>NumPy</span><span class=matrix-tag>Pandas</span><span class=matrix-tag>OpenPyXL</span></div></div><div class="matrix-panel"><div class="m-panel-head">Problem Solving</div><div class="tag-collection"><span class=matrix-tag>200+ problems</span><span class=matrix-tag>Striver A2Z</span><span class=matrix-tag>Arrays</span><span class=matrix-tag>Trees</span><span class=matrix-tag>Recursion</span></div><div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap"><a href="https://github.com/luckybisht21/Leetcode_striver" target="_blank" rel="noopener" class="p-link" style="font-size:10px">Leetcode_striver ↗</a><a href="https://github.com/luckybisht21/leetcode_contest" target="_blank" rel="noopener" class="p-link" style="font-size:10px">leetcode_contest ↗</a></div></div></div></div></section>
+<div class="divider"></div>
+
+<section id="achievements"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">Recognition</div><h2 class="sec-title">Achievements &amp; Certifications</h2></div></div>
+<div class="stamp-grid reveal"><div class="stamp"><div class="st-badge">FINALIST</div><div class="st-title">NIMESHA Hardware Hackathon 2025</div><div class="st-desc">24-hr prototyping · Karuyantra Robotics Club</div></div><div class="stamp"><div class="st-badge">TOP 50</div><div class="st-title">Bharat Auto Expo 2025</div><div class="st-desc">Road &amp; traffic safety innovation</div></div><div class="stamp"><div class="st-badge">2ND PLACE</div><div class="st-title">Shark Tank — College Edition 2024</div><div class="st-desc">Autonomous robotics commercialisation pitch</div></div><div class="stamp"><div class="st-badge">FINALIST</div><div class="st-title">IPU Innovation 2024</div><div class="st-desc">Maritime security research track</div></div></div>
+<div class="cert-table reveal"><div class="cert-row"><span>Samsung Innovation Campus — Artificial Intelligence</span><span>2025–2026</span></div><div class="cert-row"><span>Introduction to IoT — Cisco</span><span>2025</span></div></div></div></section>
+<div class="divider"></div>
+
+<section id="contact"><div class="wrap"><div class="sec-head reveal"><div><div class="sec-tag">Get in touch</div><h2 class="sec-title">Contact</h2></div></div>
+<div class="contact-layout reveal"><div class="contact-box"><h3>Let's build something that moves.</h3><p>I'm looking for robotics software, SLAM / localization and autonomous-navigation roles starting after graduation in 2027. Happy to walk through any project in detail.</p><a href="mailto:luckybisht0094@gmail.com" class="btn btn-fill">Send an email →</a></div>
+<div class="terminal-channels"><div class="channel-row"><span class="c-sym">✉</span><span>luckybisht0094@gmail.com</span><button class="c-copy" onclick="copyValue(event,'luckybisht0094@gmail.com',this)">COPY</button></div>
+<div class="channel-row"><span class="c-sym">☎</span><span>+91-8287356673</span><button class="c-copy" onclick="copyValue(event,'+918287356673',this)">COPY</button></div>
+<a href="https://github.com/luckybisht21" target="_blank" rel="noopener" class="channel-row"><span class="c-sym">⌥</span><span>github.com/luckybisht21</span></a>
+<a href="https://www.linkedin.com/in/lucky-bisht-b176b2291/" target="_blank" rel="noopener" class="channel-row"><span class="c-sym">◈</span><span>linkedin.com/in/lucky-bisht-b176b2291</span></a></div></div></div></section>
+<footer><div class="wrap foot-content"><span>© 2026 LUCKY BISHT · DELHI, INDIA</span><span>B.TECH AUTOMATION &amp; ROBOTICS · GGSIPU (2023–2027)</span></div></footer>
+<script>
+const obs=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*60)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const links=[...document.querySelectorAll('.nav-links a')];
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>so.observe(s));
+function copyValue(e,text,btn){e.preventDefault();try{navigator.clipboard.writeText(text)}catch(_){}const p=btn.textContent;btn.textContent='COPIED';btn.classList.add('copied');setTimeout(()=>{btn.textContent=p;btn.classList.remove('copied')},1800)}
+</script></body></html>
